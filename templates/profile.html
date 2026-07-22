@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+<h2>👤 Личный кабинет — {{ user.username }}</h2>
+<hr>
+
+<h4>🎯 Игры, которые я создал:</h4>
+{% if my_games %}
+    {% for game in my_games %}
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5>{{ game.title }}</h5>
+            <p>{{ game.ground.name }} | {{ game.game_date.strftime('%d.%m.%Y %H:%M') }}</p>
+            <p>Игроков: {{ game.players|length }}/{{ game.max_players }}</p>
+            <a href="/ground/{{ game.ground_id }}?lang={{ lang }}" class="btn btn-sm btn-primary">Открыть</a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">Вы ещё не создали ни одной игры</p>
+{% endif %}
+
+<hr>
+
+<h4>🤝 Игры, в которых я участвую:</h4>
+{% if joined_games %}
+    {% for game in joined_games %}
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5>{{ game.title }}</h5>
+            <p>{{ game.ground.name }} | {{ game.game_date.strftime('%d.%m.%Y %H:%M') }}</p>
+            <p>Создатель: {{ game.creator.username }}</p>
+            <a href="/ground/{{ game.ground_id }}?lang={{ lang }}" class="btn btn-sm btn-primary">Открыть</a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">Вы не записаны ни на одну игру</p>
+{% endif %}
+</div>
+{% endblock %}

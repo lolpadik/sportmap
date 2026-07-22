@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="col-md-4 mx-auto mt-5">
+    <h2>{{ t.register }}</h2>
+    {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+    <form method="post">
+        <input type="text" name="username" class="form-control mb-2" placeholder="{{ t.username }}" required>
+        <input type="email" name="email" class="form-control mb-2" placeholder="{{ t.email }}" required>
+        <input type="password" name="password" class="form-control mb-2" placeholder="{{ t.password }}" required>
+        <button class="btn btn-success w-100">{{ t.register }}</button>
+    </form>
+</div>
+{% endblock %}

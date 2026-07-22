@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+<h2>{{ ground.name }}</h2>
+<p>{{ ground.sport_type }} | {{ ground.address }}</p>
+<p>{{ ground.description }}</p>
+
+{% if user %}
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createGameModal">{{ t.create_game }}</button>
+{% endif %}
+
+<h4>{{ t.upcoming_games }}:</h4>
+{% for game in games %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5>{{ game.title }}</h5>
+        <p>{{ game.game_date.strftime('%d.%m.%Y %H:%M') }} | {{ t.players }}: {{ game.players|length }}/{{ game.max_players }}</p>
+        <p>{{ game.description }}</p>
+
+        <h6>{{ t.participants }}:</h6>
+        <ul>
+            {% for player in game.players %}
+                <li>{{ player.user.username }}</li>
+            {% else %}
+                <li class="text-muted">{{ t.no_players }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if user and game.players|selectattr("user_id", "equalto", user.id)|list|length == 0 and game.players|length < game.max_players %}
+            <form method="post" action="/join_game/{{ game.id }}" style="display:inline;">
+                <button class="btn btn-sm btn-success">{{ t.join }}</button>
+            </form>
+        {% endif %}
+
+        <div class="mt-3">
+            <h6>{{ t.chat }}:</h6>
+            <div class="border p-2 mb-2" style="max-height:150px; overflow-y:auto;">
+                {% for msg in game.messages|sort(attribute='timestamp') %}
+                    <p><strong>{{ msg.user.username }}</strong> <small class="text-muted">{{ msg.timestamp.strftime('%H:%M') }}</small>: {{ msg.text }}</p>
+                {% else %}
+                    <p class="text-muted">{{ t.no_messages }}</p>
+                {% endfor %}
+            </div>
+            {% if user %}
+            <form method="post" action="/send_message/{{ game.id }}" class="d-flex">
+                <input type="text" name="text" class="form-control me-2" placeholder="{{ t.type_message }}" required>
+                <button class="btn btn-sm btn-outline-success">{{ t.send }}</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% else %}
+<p>{{ t.no_games }}</p>
+{% endfor %}
+
+{% if user %}
+<div class="modal fade" id="createGameModal" tabindex="-1">
+  <div class="modal-dialog">
+    <form method="post" action="/create_game">
+      <div class="modal-content">
+        <div class="modal-header"><h5>{{ t.create_game }}</h5></div>
+        <div class="modal-body">
+            <input type="hidden" name="ground_id" value="{{ ground.id }}">
+            <input type="text" name="title" class="form-control mb-2" placeholder="Название" required>
+            <input type="datetime-local" name="game_date" class="form-control mb-2" required>
+            <input type="number" name="max_players" class="form-control mb-2" value="10">
+            <textarea name="description" class="form-control mb-2" placeholder="Описание"></textarea>
+        </div>
+        <div class="modal-footer"><button class="btn btn-success">{{ t.create_game }}</button></div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endif %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
