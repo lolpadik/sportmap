@@ -26,9 +26,9 @@ def get_lang(request: Request):
 
 @app.on_event("startup")
 async def startup():
-    db_path = "/opt/render/project/src/sportmap.db"
-    if os.path.exists(db_path):
-        os.remove(db_path)
+    for db_path in ["instance/sportmap.db", "sportmap.db"]:
+        if os.path.exists(db_path):
+            os.remove(db_path)
     init_db()
     db = next(get_db())
     grounds = [
