@@ -26,8 +26,8 @@
 </div>
 
 <div class="mb-3">
-    <input type="text" id="searchInput" class="form-control" placeholder="🔍 {{ t.search }}" list="addressList" autocomplete="off">
-    <datalist id="addressList"></datalist>
+    <input type="text" id="searchInput" class="form-control" placeholder="🔍 {{ t.search }}" autocomplete="off">
+    <div id="searchSuggestions" style="display:none;position:absolute;background:#fff;color:#000;border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;z-index:1000;width:calc(100% - 24px);box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>
 </div>
 
 <div id="map" style="height: 500px; border-radius: 15px;"></div>
@@ -147,34 +147,47 @@
         });
         
         var searchInput = document.getElementById('searchInput');
+        var suggestionsDiv = document.getElementById('searchSuggestions');
+        
+        function hideSuggestions() {
+            suggestionsDiv.style.display = 'none';
+        }
+        
         searchInput.addEventListener('input', function() {
-            var val = this.value;
-            // Убираем " - Название" если выбрали из подсказки
-            if (val.indexOf(' - ') !== -1) {
-                val = val.split(' - ')[0];
-            }
-            searchText = val;
+            searchText = this.value;
             showGrounds();
             var s = searchText.toLowerCase();
             var matches = allGrounds.filter(function(g) {
                 return g.address.toLowerCase().indexOf(s) !== -1 || g.name.toLowerCase().indexOf(s) !== -1;
             });
-            var datalist = document.getElementById('addressList');
-            datalist.innerHTML = '';
-            matches.slice(0, 5).forEach(function(g) {
-                var option = document.createElement('option');
-                option.value = g.address + ' - ' + g.name;
-                datalist.appendChild(option);
-            });
+            if (matches.length > 0 && s) {
+                suggestionsDiv.innerHTML = '';
+                matches.slice(0, 5).forEach(function(g) {
+                    var div = document.createElement('div');
+                    div.style.padding = '8px 12px';
+                    div.style.cursor = 'pointer';
+                    div.style.borderBottom = '1px solid #eee';
+                    div.textContent = g.address + ' - ' + g.name;
+                    div.addEventListener('click', function() {
+                        searchInput.value = g.address;
+                        searchText = g.address;
+                        showGrounds();
+                        hideSuggestions();
+                        map.setCenter([g.lat, g.lon], 15);
+                    });
+                    suggestionsDiv.appendChild(div);
+                });
+                suggestionsDiv.style.display = 'block';
+            } else {
+                hideSuggestions();
+            }
         });
+        
         searchInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                var val = this.value;
-                if (val.indexOf(' - ') !== -1) {
-                    val = val.split(' - ')[0];
-                }
-                searchText = val;
+                hideSuggestions();
+                searchText = this.value;
                 showGrounds();
                 var s = searchText.toLowerCase();
                 var found = allGrounds.filter(function(g) {
@@ -185,6 +198,12 @@
                 } else if (s) {
                     alert('Адрес не найден');
                 }
+            }
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (e.target !== searchInput && e.target.parentNode !== suggestionsDiv) {
+                hideSuggestions();
             }
         });
         
