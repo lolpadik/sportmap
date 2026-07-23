@@ -76,10 +76,20 @@
             e.preventDefault();
             var input = document.getElementById('chatInput');
             var msg = input.value;
+            if (!msg.trim()) return;
             input.value = '';
             document.getElementById('chatMessages').innerHTML += '<div style="text-align:right;margin:5px;"><span style="background:#8b5cf6;padding:5px 10px;border-radius:10px;">' + msg + '</span></div>';
             await fetch('/chat_send', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'text=' + encodeURIComponent(msg) });
         });
+        // Проверка новых ответов каждые 5 секунд
+        setInterval(async function() {
+            var res = await fetch('/chat_check');
+            var data = await res.json();
+            if (data.reply) {
+                document.getElementById('chatMessages').innerHTML += '<div style="text-align:left;margin:5px;"><span style="background:#10b981;padding:5px 10px;border-radius:10px;">' + data.reply + '</span></div>';
+                await fetch('/chat_clear');
+            }
+        }, 5000);
     </script>
 </body>
 </html>

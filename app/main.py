@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form, Depends
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from datetime import datetime
@@ -307,22 +307,38 @@ async def chat_send(request: Request, text: str = Form(...)):
     username = user.username if user else "Гость"
     bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
     try:
-        bot.send_message("6886288656", f"💬 Чат от {username}:\n{text}")
+        bot.send_message("6886288656", f"💬 Чат от {username}:\n{text}\n\nДля ответа ответьте на это сообщение (reply)")
     except:
         pass
+    return {"ok": True}
+
+
+@app.get("/chat_check")
+async def chat_check():
+    if os.path.exists("chat_reply.txt"):
+        with open("chat_reply.txt", "r", encoding="utf-8") as f:
+            reply = f.read()
+        return JSONResponse({"reply": reply})
+    return JSONResponse({"reply": None})
+
+
+@app.get("/chat_clear")
+async def chat_clear():
+    if os.path.exists("chat_reply.txt"):
+        os.remove("chat_reply.txt")
     return {"ok": True}
 
 
 @app.post("/telegram_callback")
 async def telegram_callback(request: Request):
     body = await request.json()
+    bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
     
     # Обработка команды /admin
     message = body.get("message", {})
     if message:
         chat_id = message.get("chat", {}).get("id")
         text = message.get("text", "")
-        bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
         if text == "/admin" and str(chat_id) == "6886288656":
             keyboard = telebot.types.InlineKeyboardMarkup()
             keyboard.add(
@@ -335,13 +351,20 @@ async def telegram_callback(request: Request):
             )
             bot.send_message(chat_id, "🛡️ Админ-панель", reply_markup=keyboard)
             return {"ok": True}
+        # Ответ админа на сообщение из чата
+        if message.get("reply_to_message") and str(chat_id) == "6886288656":
+            original = message.get("reply_to_message", {}).get("text", "")
+            if "💬 Чат от" in original:
+                with open("chat_reply.txt", "w", encoding="utf-8") as f:
+                    f.write(text)
+                bot.send_message(chat_id, "✅ Ответ отправлен пользователю")
+                return {"ok": True}
     
     # Обработка callback'ов
     callback = body.get("callback_query", {})
     data = callback.get("data", "")
     chat_id = callback.get("message", {}).get("chat", {}).get("id")
     message_id = callback.get("message", {}).get("message_id")
-    bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
     
     if data.startswith("accept"):
         uid = data.split("|")[1]
