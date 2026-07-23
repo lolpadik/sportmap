@@ -7,12 +7,21 @@
         <input type="text" name="username" class="form-control mb-2" placeholder="{{ t.username }}" required>
         <input type="email" name="email" class="form-control mb-2" placeholder="{{ t.email }}" required>
         <input type="password" name="password" id="password" class="form-control mb-2" placeholder="{{ t.password }}" required>
+        
         <div class="mb-2">
             <div class="progress" style="height: 5px;">
                 <div id="passStrength" class="progress-bar" style="width: 0%;"></div>
             </div>
             <small id="passText" class="text-muted">Введите пароль</small>
         </div>
+        
+        <div class="mb-3" id="requirements">
+            <small id="req1" class="text-muted d-block">❌ Минимум 6 символов</small>
+            <small id="req2" class="text-muted d-block">❌ Заглавная буква</small>
+            <small id="req3" class="text-muted d-block">❌ Цифра</small>
+            <small id="req4" class="text-muted d-block">❌ Спецсимвол</small>
+        </div>
+        
         <button class="btn btn-success w-100" id="submitBtn" disabled>{{ t.register }}</button>
     </form>
 </div>
@@ -23,20 +32,33 @@ var strength = document.getElementById('passStrength');
 var text = document.getElementById('passText');
 var btn = document.getElementById('submitBtn');
 
+var req1 = document.getElementById('req1');
+var req2 = document.getElementById('req2');
+var req3 = document.getElementById('req3');
+var req4 = document.getElementById('req4');
+
 password.addEventListener('input', function() {
     var val = password.value;
     var score = 0;
-    if (val.length >= 6) score++;
-    if (val.length >= 10) score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
     
-    var percent = score * 20;
+    if (val.length >= 6) { req1.innerHTML = '✅ Минимум 6 символов'; req1.className = 'text-success d-block'; score++; }
+    else { req1.innerHTML = '❌ Минимум 6 символов'; req1.className = 'text-muted d-block'; }
+    
+    if (/[A-ZА-ЯЁ]/.test(val)) { req2.innerHTML = '✅ Заглавная буква'; req2.className = 'text-success d-block'; score++; }
+    else { req2.innerHTML = '❌ Заглавная буква'; req2.className = 'text-muted d-block'; }
+    
+    if (/[0-9]/.test(val)) { req3.innerHTML = '✅ Цифра'; req3.className = 'text-success d-block'; score++; }
+    else { req3.innerHTML = '❌ Цифра'; req3.className = 'text-muted d-block'; }
+    
+    if (/[^A-Za-zА-Яа-яЁё0-9]/.test(val)) { req4.innerHTML = '✅ Спецсимвол'; req4.className = 'text-success d-block'; score++; }
+    else { req4.innerHTML = '❌ Спецсимвол'; req4.className = 'text-muted d-block'; }
+    
+    var percent = score * 25;
     strength.style.width = percent + '%';
     
     if (score <= 1) { strength.className = 'progress-bar bg-danger'; text.textContent = 'Слабый'; btn.disabled = true; }
-    else if (score <= 3) { strength.className = 'progress-bar bg-warning'; text.textContent = 'Средний'; btn.disabled = true; }
+    else if (score <= 2) { strength.className = 'progress-bar bg-warning'; text.textContent = 'Средний'; btn.disabled = true; }
+    else if (score === 3) { strength.className = 'progress-bar bg-info'; text.textContent = 'Хороший'; btn.disabled = false; }
     else { strength.className = 'progress-bar bg-success'; text.textContent = 'Надёжный'; btn.disabled = false; }
 });
 </script>
