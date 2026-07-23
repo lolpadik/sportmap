@@ -3,11 +3,41 @@
 <div class="col-md-4 mx-auto mt-5">
     <h2>{{ t.register }}</h2>
     {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
-    <form method="post">
+    <form method="post" id="registerForm">
         <input type="text" name="username" class="form-control mb-2" placeholder="{{ t.username }}" required>
         <input type="email" name="email" class="form-control mb-2" placeholder="{{ t.email }}" required>
-        <input type="password" name="password" class="form-control mb-2" placeholder="{{ t.password }}" required>
-        <button class="btn btn-success w-100">{{ t.register }}</button>
+        <input type="password" name="password" id="password" class="form-control mb-2" placeholder="{{ t.password }}" required>
+        <div class="mb-2">
+            <div class="progress" style="height: 5px;">
+                <div id="passStrength" class="progress-bar" style="width: 0%;"></div>
+            </div>
+            <small id="passText" class="text-muted">Введите пароль</small>
+        </div>
+        <button class="btn btn-success w-100" id="submitBtn" disabled>{{ t.register }}</button>
     </form>
 </div>
+
+<script>
+var password = document.getElementById('password');
+var strength = document.getElementById('passStrength');
+var text = document.getElementById('passText');
+var btn = document.getElementById('submitBtn');
+
+password.addEventListener('input', function() {
+    var val = password.value;
+    var score = 0;
+    if (val.length >= 6) score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    
+    var percent = score * 20;
+    strength.style.width = percent + '%';
+    
+    if (score <= 1) { strength.className = 'progress-bar bg-danger'; text.textContent = 'Слабый'; btn.disabled = true; }
+    else if (score <= 3) { strength.className = 'progress-bar bg-warning'; text.textContent = 'Средний'; btn.disabled = true; }
+    else { strength.className = 'progress-bar bg-success'; text.textContent = 'Надёжный'; btn.disabled = false; }
+});
+</script>
 {% endblock %}
