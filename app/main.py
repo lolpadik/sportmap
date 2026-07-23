@@ -318,7 +318,7 @@ async def admin_delete_ground(request: Request, ground_id: int, db: Session = De
 async def calendar(request: Request, db: Session = Depends(get_db)):
     user = get_current_user(request)
     lang, t = get_lang(request)
-    games = db.query(Game).filter(Game.game_date >= datetime.utcnow()).order_by(Game.game_date).all()
+    games = db.query(Game).order_by(Game.game_date).all()
     games_json = json.dumps([{
         "title": g.title,
         "start": g.game_date.strftime("%Y-%m-%dT%H:%M"),
