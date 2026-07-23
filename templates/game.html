@@ -6,6 +6,11 @@
 <p>{{ ground.description }}</p>
 <p>🎮 {{ t.total_games }}: {{ total_games }}</p>
 <p>⭐ {{ t.rating }}: {{ ground.avg_rating }}/5 ({{ ground.total_ratings }} {{ t.ratings }})</p>
+
+{% if not user %}
+<p class="text-muted">🔒 <a href="/login?lang={{ lang }}">Войдите</a>, чтобы оценивать площадку и создавать игры</p>
+{% endif %}
+
 {% if user %}
 <form method="post" action="/rate_ground/{{ ground.id }}" class="d-flex align-items-center mb-2">
     <span class="me-2">{{ t.rate }}:</span>
