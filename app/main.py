@@ -4,7 +4,6 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from datetime import datetime
 import json
-import os
 import telebot
 
 from .database import get_db, init_db
@@ -26,18 +25,16 @@ def get_lang(request: Request):
 
 @app.on_event("startup")
 async def startup():
-    db_path = "sportmap.db"
-    if os.path.exists(db_path):
-        os.remove(db_path)
     init_db()
     db = next(get_db())
-    grounds = [
-        SportsGround(name="Стадион Динамо", sport_type="Футбол", city="Минск",
-                     address="Минск, ул. Кирова, 8", latitude=53.8950, longitude=27.5590,
-                     description="Главный стадион Беларуси"),
-    ]
-    db.add_all(grounds)
-    db.commit()
+    if db.query(SportsGround).count() == 0:
+        grounds = [
+            SportsGround(name="Стадион Динамо", sport_type="Футбол", city="Минск",
+                         address="Минск, ул. Кирова, 8", latitude=53.8950, longitude=27.5590,
+                         description="Главный стадион Беларуси"),
+        ]
+        db.add_all(grounds)
+        db.commit()
     db.close()
 
 
