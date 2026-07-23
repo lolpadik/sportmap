@@ -25,9 +25,9 @@
     <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏃 Бег">{{ t.sport_run }}</button>
 </div>
 
-<div class="mb-3">
+<div class="mb-3" style="position:relative;">
     <input type="text" id="searchInput" class="form-control" placeholder="🔍 {{ t.search }}" autocomplete="off">
-    <div id="searchSuggestions" style="display:none;position:absolute;background:#fff;color:#000;border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;z-index:1000;width:calc(100% - 24px);box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>
+    <div id="searchSuggestions" style="display:none;position:absolute;top:100%;left:0;background:#fff;color:#000;border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;z-index:1000;width:100%;box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>
 </div>
 
 <div id="map" style="height: 500px; border-radius: 15px;"></div>
