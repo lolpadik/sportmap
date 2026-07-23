@@ -148,7 +148,12 @@
         
         var searchInput = document.getElementById('searchInput');
         searchInput.addEventListener('input', function() {
-            searchText = this.value;
+            var val = this.value;
+            // Убираем " - Название" если выбрали из подсказки
+            if (val.indexOf(' - ') !== -1) {
+                val = val.split(' - ')[0];
+            }
+            searchText = val;
             showGrounds();
             var s = searchText.toLowerCase();
             var matches = allGrounds.filter(function(g) {
@@ -165,7 +170,11 @@
         searchInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                searchText = this.value;
+                var val = this.value;
+                if (val.indexOf(' - ') !== -1) {
+                    val = val.split(' - ')[0];
+                }
+                searchText = val;
                 showGrounds();
                 var s = searchText.toLowerCase();
                 var found = allGrounds.filter(function(g) {
