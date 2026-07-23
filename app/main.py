@@ -4,7 +4,6 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from datetime import datetime
 import json
-import os
 import telebot
 
 from .database import get_db, init_db
@@ -26,18 +25,16 @@ def get_lang(request: Request):
 
 @app.on_event("startup")
 async def startup():
-    for db_path in ["instance/sportmap.db", "sportmap.db"]:
-        if os.path.exists(db_path):
-            os.remove(db_path)
     init_db()
     db = next(get_db())
-    grounds = [
-        SportsGround(name="Стадион Динамо", sport_type="Футбол", city="Минск",
-                     address="Минск, ул. Кирова, 8", latitude=53.8950, longitude=27.5590,
-                     description="Главный стадион Беларуси"),
-    ]
-    db.add_all(grounds)
-    db.commit()
+    if db.query(SportsGround).count() == 0:
+        grounds = [
+            SportsGround(name="Стадион Динамо", sport_type="Футбол", city="Минск",
+                         address="Минск, ул. Кирова, 8", latitude=53.8950, longitude=27.5590,
+                         description="Главный стадион Беларуси"),
+        ]
+        db.add_all(grounds)
+        db.commit()
     db.close()
 
 
@@ -192,8 +189,11 @@ async def set_city(request: Request, city: str = Form(...), db: Session = Depend
     user = require_login(request)
     if isinstance(user, RedirectResponse):
         return user
-    user.city = city
+    # Принудительно обновляем из базы
+    db_user = db.query(User).filter(User.id == user.id).first()
+    db_user.city = city
     db.commit()
+    db.refresh(db_user)
     return RedirectResponse("/profile", status_code=303)
 
 
