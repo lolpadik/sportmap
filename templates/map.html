@@ -3,8 +3,8 @@
 <div class="container mt-4">
 <h2 class="mb-4">{{ t.map }}</h2>
 
-<div class="d-flex flex-wrap gap-2 mb-3">
-    <button class="btn btn-outline-light btn-sm city-btn active" data-city="all">Все</button>
+<div class="d-flex flex-wrap gap-2 mb-2">
+    <button class="btn btn-outline-light btn-sm city-btn active" data-city="all">Все города</button>
     <button class="btn btn-outline-light btn-sm city-btn" data-city="Минск">Минск</button>
     <button class="btn btn-outline-light btn-sm city-btn" data-city="Гомель">Гомель</button>
     <button class="btn btn-outline-light btn-sm city-btn" data-city="Могилёв">Могилёв</button>
@@ -13,8 +13,24 @@
     <button class="btn btn-outline-light btn-sm city-btn" data-city="Витебск">Витебск</button>
 </div>
 
+<div class="d-flex flex-wrap gap-2 mb-2">
+    <button class="btn btn-outline-info btn-sm sport-btn active" data-sport="all">Все виды</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="⚽ Футбол">⚽ Футбол</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏀 Баскетбол">🏀 Баскетбол</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏐 Волейбол">🏐 Волейбол</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏒 Хоккей">🏒 Хоккей</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🎾 Теннис">🎾 Теннис</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏋️ Воркаут">🏋️ Воркаут</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🛹 Скейтбординг">🛹 Скейтбординг</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏃 Бег">🏃 Бег</button>
+</div>
+
+<div class="mb-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Поиск по адресу...">
+</div>
+
 <div id="map" style="height: 500px; border-radius: 15px;"></div>
-<p class="text-muted mt-2">Кликни на карту чтобы предложить новую площадку в этом месте</p>
+<p class="text-muted mt-2">Кликни на карту чтобы предложить новую площадку</p>
 {% if user %}
 <button class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#suggestModal">📩 Предложить площадку</button>
 {% endif %}
@@ -68,28 +84,21 @@
             'Витебск': [55.19, 30.2]
         };
         
-        var userCity = "{{ user.city if user else 'Минск' }}";
-        var startCenter = cityCoords[userCity] || [53.9, 27.56];
-        var startZoom = (userCity && userCity !== 'Минск') ? 12 : 7;
-        
-        var map = new ymaps.Map('map', {
-            center: startCenter,
-            zoom: startZoom
-        });
-        
+        var map = new ymaps.Map('map', { center: [53.9, 27.56], zoom: 7 });
         var allGrounds = {{ grounds_json | safe }};
+        var currentCity = 'all';
+        var currentSport = 'all';
+        var searchText = '';
         
-        function showGrounds(city) {
+        function showGrounds() {
             map.geoObjects.removeAll();
-            var activeGrounds;
-            if (city === 'all') {
-                activeGrounds = allGrounds;
-            } else {
-                activeGrounds = allGrounds.filter(function(g) {
-                    return g.city === city;
-                });
-            }
-            activeGrounds.forEach(function(g) {
+            var filtered = allGrounds.filter(function(g) {
+                var cityMatch = currentCity === 'all' || g.city === currentCity;
+                var sportMatch = currentSport === 'all' || g.sport_type.indexOf(currentSport) !== -1;
+                var searchMatch = !searchText || g.address.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 || g.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
+                return cityMatch && sportMatch && searchMatch;
+            });
+            filtered.forEach(function(g) {
                 var color, status;
                 if (g.has_active) { color = 'islands#greenCircleIcon'; status = '🟢 Идёт игра'; }
                 else if (g.has_upcoming) { color = 'islands#yellowCircleIcon'; status = '🟡 Предстоит игра'; }
@@ -101,20 +110,31 @@
             });
         }
         
-        showGrounds('all');
+        showGrounds();
         
         document.querySelectorAll('.city-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.city-btn').forEach(function(b) { b.classList.remove('active'); });
                 this.classList.add('active');
-                var city = this.dataset.city;
-                showGrounds(city);
-                if (city !== 'all') {
-                    map.setCenter(cityCoords[city], 12);
-                } else {
-                    map.setCenter([53.9, 27.56], 7);
-                }
+                currentCity = this.dataset.city;
+                showGrounds();
+                if (currentCity !== 'all') map.setCenter(cityCoords[currentCity], 12);
+                else map.setCenter([53.9, 27.56], 7);
             });
+        });
+        
+        document.querySelectorAll('.sport-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.sport-btn').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                currentSport = this.dataset.sport;
+                showGrounds();
+            });
+        });
+        
+        document.getElementById('searchInput').addEventListener('input', function() {
+            searchText = this.value;
+            showGrounds();
         });
         
         map.events.add('click', function(e) {
