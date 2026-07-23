@@ -17,23 +17,38 @@
 </form>
 
 <style>
-.rating-stars { direction: rtl; display: flex; }
+.rating-stars { display: flex; }
 .star-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; opacity: 0.3; transition: 0.1s; }
-.star-btn:hover, .star-btn:hover ~ .star-btn, .star-btn.active, .star-btn.active ~ .star-btn { opacity: 1; }
+.star-btn.active { opacity: 1; }
+.star-btn:hover { opacity: 1; }
 </style>
 
 <script>
-document.querySelectorAll('.star-btn').forEach(function(btn) {
+document.querySelectorAll('.star-btn').forEach(function(btn, index) {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.star-btn').forEach(function(b) { b.classList.remove('active'); });
-        this.classList.add('active');
+        for (var i = 0; i <= index; i++) {
+            document.querySelectorAll('.star-btn')[i].classList.add('active');
+        }
+    });
+    btn.addEventListener('mouseenter', function() {
+        document.querySelectorAll('.star-btn').forEach(function(b) { b.classList.remove('active'); });
+        for (var i = 0; i <= index; i++) {
+            document.querySelectorAll('.star-btn')[i].classList.add('active');
+        }
+    });
+    btn.addEventListener('mouseleave', function() {
+        document.querySelectorAll('.star-btn').forEach(function(b) { b.classList.remove('active'); });
+        for (var i = 0; i < currentRating; i++) {
+            document.querySelectorAll('.star-btn')[i].classList.add('active');
+        }
     });
 });
 var currentRating = {{ ground.avg_rating|default(0)|round }};
 if (currentRating > 0) {
     var stars = document.querySelectorAll('.star-btn');
     for (var i = 0; i < currentRating; i++) {
-        stars[4 - i].classList.add('active');
+        stars[i].classList.add('active');
     }
 }
 </script>
