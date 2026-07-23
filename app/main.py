@@ -61,9 +61,8 @@ async def show_map(request: Request, db: Session = Depends(get_db)):
         "has_active": any(game.game_date <= now for game in g.games if game.players),
         "has_upcoming": any(game.game_date > now for game in g.games)
     } for g in grounds])
-    user_city = user.city if user else "Минск"
     return templates.TemplateResponse("map.html", {
-        "request": request, "user": user, "grounds_json": grounds_json, "t": t, "lang": lang, "user_city": user_city
+        "request": request, "user": user, "grounds_json": grounds_json, "t": t, "lang": lang
     })
 
 
@@ -205,9 +204,7 @@ async def telegram_callback(request: Request):
     data = callback.get("data", "")
     chat_id = callback.get("message", {}).get("chat", {}).get("id")
     message_id = callback.get("message", {}).get("message_id")
-
     bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
-
     if data.startswith("accept"):
         parts = data.split("|")
         name, sport_type, address, lat, lon, description = parts[1], parts[2], parts[3], parts[4], parts[5], parts[6]
@@ -221,7 +218,6 @@ async def telegram_callback(request: Request):
     elif data.startswith("reject"):
         name = data.split("|")[1]
         bot.edit_message_text(f"❌ Отклонено: {name}", chat_id, message_id)
-
     return {"ok": True}
 
 
@@ -232,14 +228,12 @@ async def suggest_ground(request: Request, name: str = Form(...), sport_type: st
     user = require_login(request)
     if isinstance(user, RedirectResponse):
         return user
-
     try:
         float(lat)
         float(lon)
     except:
         lang, t = get_lang(request)
         return RedirectResponse("/map?lang=" + lang, status_code=303)
-
     with open("suggestions.txt", "a", encoding="utf-8") as f:
         f.write(f"\n--- Новая заявка ---\n")
         f.write(f"От: {user.username}\n")
@@ -248,18 +242,14 @@ async def suggest_ground(request: Request, name: str = Form(...), sport_type: st
         f.write(f"Адрес: {address}\n")
         f.write(f"Координаты: {lat}, {lon}\n")
         f.write(f"Описание: {description}\n")
-
     bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
     text = f"📩 Новая площадка!\n\nОт: {user.username}\nНазвание: {name}\nСпорт: {sport_type}\nАдрес: {address}\nКоординаты: {lat}, {lon}\nОписание: {description}"
-
     keyboard = telebot.types.InlineKeyboardMarkup()
     btn_yes = telebot.types.InlineKeyboardButton("✅ Принять", callback_data=f"accept|{name}|{sport_type}|{address}|{lat}|{lon}|{description}")
     btn_no = telebot.types.InlineKeyboardButton("❌ Отказать", callback_data=f"reject|{name}")
     keyboard.add(btn_yes, btn_no)
-
     try:
         bot.send_message("6886288656", text, reply_markup=keyboard)
     except:
         pass
-
     return RedirectResponse("/map", status_code=303)
