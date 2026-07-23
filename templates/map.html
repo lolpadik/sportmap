@@ -4,7 +4,7 @@
 <h2 class="mb-4">{{ t.map }}</h2>
 
 <div class="d-flex flex-wrap gap-2 mb-2">
-    <button class="btn btn-outline-warning btn-sm city-btn active" data-city="all">Все города</button>
+    <button class="btn btn-outline-warning btn-sm city-btn active" data-city="all">{{ t.all_cities }}</button>
     <button class="btn btn-outline-warning btn-sm city-btn" data-city="Минск">Минск</button>
     <button class="btn btn-outline-warning btn-sm city-btn" data-city="Гомель">Гомель</button>
     <button class="btn btn-outline-warning btn-sm city-btn" data-city="Могилёв">Могилёв</button>
@@ -14,7 +14,7 @@
 </div>
 
 <div class="d-flex flex-wrap gap-2 mb-2">
-    <button class="btn btn-outline-info btn-sm sport-btn active" data-sport="all">Все виды</button>
+    <button class="btn btn-outline-info btn-sm sport-btn active" data-sport="all">{{ t.all_sports }}</button>
     <button class="btn btn-outline-info btn-sm sport-btn" data-sport="⚽ Футбол">⚽ Футбол</button>
     <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏀 Баскетбол">🏀 Баскетбол</button>
     <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏐 Волейбол">🏐 Волейбол</button>
@@ -26,13 +26,13 @@
 </div>
 
 <div class="mb-3">
-    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Поиск по адресу...">
+    <input type="text" id="searchInput" class="form-control" placeholder="🔍 {{ t.search }}">
 </div>
 
 <div id="map" style="height: 500px; border-radius: 15px;"></div>
 <p class="text-muted mt-2">Кликни на карту чтобы предложить новую площадку</p>
 {% if user %}
-<button class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#suggestModal">📩 Предложить площадку</button>
+<button class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#suggestModal">📩 {{ t.suggest }}</button>
 {% endif %}
 </div>
 
@@ -41,7 +41,7 @@
   <div class="modal-dialog">
     <form method="post" action="/suggest_ground">
       <div class="modal-content">
-        <div class="modal-header"><h5>Предложить новую площадку</h5></div>
+        <div class="modal-header"><h5>{{ t.suggest }}</h5></div>
         <div class="modal-body">
             <input type="text" name="name" class="form-control mb-2" placeholder="Название" required>
             <select name="sport_type" class="form-control mb-2" required>
@@ -65,7 +65,7 @@
             <input type="text" id="lonInput" name="lon" class="form-control mb-2" placeholder="Координаты (кликни на карту)" readonly required>
             <textarea name="description" class="form-control mb-2" placeholder="Описание"></textarea>
         </div>
-        <div class="modal-footer"><button class="btn btn-success">Отправить</button></div>
+        <div class="modal-footer"><button class="btn btn-success">{{ t.send }}</button></div>
       </div>
     </form>
   </div>

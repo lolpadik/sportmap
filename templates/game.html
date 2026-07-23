@@ -4,11 +4,11 @@
 <h2>{{ ground.name }}</h2>
 <p>{{ ground.sport_type }} | {{ ground.address }}</p>
 <p>{{ ground.description }}</p>
-<p>🎮 Всего игр на площадке: {{ total_games }}</p>
-<p>⭐ Рейтинг: {{ ground.avg_rating }}/5 ({{ ground.total_ratings }} оценок)</p>
+<p>🎮 {{ t.total_games }}: {{ total_games }}</p>
+<p>⭐ {{ t.rating }}: {{ ground.avg_rating }}/5 ({{ ground.total_ratings }} {{ t.ratings }})</p>
 {% if user %}
 <form method="post" action="/rate_ground/{{ ground.id }}" class="d-flex align-items-center mb-2">
-    <span class="me-2">Оценить:</span>
+    <span class="me-2">{{ t.rate }}:</span>
     <div class="rating-stars">
         {% for i in [1,2,3,4,5] %}
         <button name="score" value="{{ i }}" class="star-btn" data-value="{{ i }}">⭐</button>
