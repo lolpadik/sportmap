@@ -28,7 +28,22 @@
         <div class="modal-header"><h5>Предложить новую площадку</h5></div>
         <div class="modal-body">
             <input type="text" name="name" class="form-control mb-2" placeholder="Название" required>
-            <input type="text" name="sport_type" class="form-control mb-2" placeholder="Вид спорта" required>
+            <select name="sport_type" class="form-control mb-2" required>
+                <option value="">Выберите вид спорта</option>
+                <option value="⚽ Футбол">⚽ Футбол</option>
+                <option value="🏀 Баскетбол">🏀 Баскетбол</option>
+                <option value="🏐 Волейбол">🏐 Волейбол</option>
+                <option value="🏒 Хоккей">🏒 Хоккей</option>
+                <option value="🎾 Теннис">🎾 Теннис</option>
+                <option value="🏸 Бадминтон">🏸 Бадминтон</option>
+                <option value="🏓 Настольный теннис">🏓 Настольный теннис</option>
+                <option value="🥋 Единоборства">🥋 Единоборства</option>
+                <option value="🏋️ Воркаут">🏋️ Воркаут</option>
+                <option value="🛹 Скейтбординг">🛹 Скейтбординг</option>
+                <option value="🏃 Бег">🏃 Бег</option>
+                <option value="🚴 Велоспорт">🚴 Велоспорт</option>
+                <option value="🏊 Плавание">🏊 Плавание</option>
+            </select>
             <input type="text" name="address" class="form-control mb-2" placeholder="Адрес" required>
             <input type="text" id="latInput" name="lat" class="form-control mb-2" placeholder="Координаты (кликни на карту)" readonly required>
             <input type="text" id="lonInput" name="lon" class="form-control mb-2" placeholder="Координаты (кликни на карту)" readonly required>
