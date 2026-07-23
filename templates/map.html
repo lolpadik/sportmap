@@ -3,15 +3,14 @@
 <div class="container mt-4">
 <h2 class="mb-4">{{ t.map }}</h2>
 
-<!-- Кнопки выбора города -->
 <div class="d-flex flex-wrap gap-2 mb-3">
     <button class="btn btn-outline-light btn-sm city-btn active" data-city="all">Все</button>
-    <button class="btn btn-outline-light btn-sm city-btn" data-city="minsk">Минск</button>
-    <button class="btn btn-outline-light btn-sm city-btn" data-city="gomel">Гомель</button>
-    <button class="btn btn-outline-light btn-sm city-btn" data-city="mogilev">Могилёв</button>
-    <button class="btn btn-outline-light btn-sm city-btn" data-city="brest">Брест</button>
-    <button class="btn btn-outline-light btn-sm city-btn" data-city="grodno">Гродно</button>
-    <button class="btn btn-outline-light btn-sm city-btn" data-city="vitebsk">Витебск</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="Минск">Минск</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="Гомель">Гомель</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="Могилёв">Могилёв</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="Брест">Брест</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="Гродно">Гродно</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="Витебск">Витебск</button>
 </div>
 
 <div id="map" style="height: 500px; border-radius: 15px;"></div>
@@ -45,25 +44,29 @@
 <script src="https://api-maps.yandex.ru/2.1/?apikey=3f0a3f83-4f48-4378-9a0f-6ac3a7d2d9a8&lang=ru_RU" type="text/javascript"></script>
 <script type="text/javascript">
     ymaps.ready(function () {
+        var cityCoords = {
+            'Минск': [53.9, 27.56],
+            'Гомель': [52.43, 31.0],
+            'Могилёв': [53.9, 30.33],
+            'Брест': [52.1, 23.7],
+            'Гродно': [53.68, 23.83],
+            'Витебск': [55.19, 30.2]
+        };
+        
+        var userCity = "{{ user.city if user else 'Минск' }}";
+        var startCenter = cityCoords[userCity] || [53.9, 27.56];
+        var startZoom = (userCity && userCity !== 'Минск') ? 12 : 7;
+        
         var map = new ymaps.Map('map', {
-            center: [53.9, 27.56],
-            zoom: 7
+            center: startCenter,
+            zoom: startZoom
         });
         
         var allGrounds = {{ grounds_json | safe }};
-        var activeGrounds = [];
-        
-        var cityCoords = {
-            'minsk': [53.9, 27.56],
-            'gomel': [52.43, 31.0],
-            'mogilev': [53.9, 30.33],
-            'brest': [52.1, 23.7],
-            'grodno': [53.68, 23.83],
-            'vitebsk': [55.19, 30.2]
-        };
         
         function showGrounds(city) {
             map.geoObjects.removeAll();
+            var activeGrounds;
             if (city === 'all') {
                 activeGrounds = allGrounds;
             } else {

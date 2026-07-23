@@ -4,6 +4,21 @@
 <h2>👤 Личный кабинет — {{ user.username }}</h2>
 <hr>
 
+<h5>🏙️ Мой город:</h5>
+<form method="post" action="/set_city" class="mb-3">
+    <select name="city" class="form-select d-inline w-auto">
+        <option value="Минск" {% if user.city == 'Минск' %}selected{% endif %}>Минск</option>
+        <option value="Гомель" {% if user.city == 'Гомель' %}selected{% endif %}>Гомель</option>
+        <option value="Могилёв" {% if user.city == 'Могилёв' %}selected{% endif %}>Могилёв</option>
+        <option value="Брест" {% if user.city == 'Брест' %}selected{% endif %}>Брест</option>
+        <option value="Гродно" {% if user.city == 'Гродно' %}selected{% endif %}>Гродно</option>
+        <option value="Витебск" {% if user.city == 'Витебск' %}selected{% endif %}>Витебск</option>
+    </select>
+    <button class="btn btn-sm btn-primary">Сохранить</button>
+</form>
+
+<hr>
+
 <h4>🎯 Игры, которые я создал:</h4>
 {% if my_games %}
     {% for game in my_games %}

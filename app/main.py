@@ -16,7 +16,7 @@ app = FastAPI(title="SportMap Belarus")
 templates = Jinja2Templates(directory="templates")
 
 from starlette.middleware.sessions import SessionMiddleware
-app.add_middleware(SessionMiddleware, secret_key="supersecretkey123")
+app.add_middleware(SessionMiddleware, secret_key="supersecretkey123", max_age=1209600)
 
 
 def get_lang(request: Request):
@@ -61,8 +61,9 @@ async def show_map(request: Request, db: Session = Depends(get_db)):
         "has_active": any(game.game_date <= now for game in g.games if game.players),
         "has_upcoming": any(game.game_date > now for game in g.games)
     } for g in grounds])
+    user_city = user.city if user else "Минск"
     return templates.TemplateResponse("map.html", {
-        "request": request, "user": user, "grounds_json": grounds_json, "t": t, "lang": lang
+        "request": request, "user": user, "grounds_json": grounds_json, "t": t, "lang": lang, "user_city": user_city
     })
 
 
@@ -185,6 +186,16 @@ async def profile(request: Request, db: Session = Depends(get_db)):
         "request": request, "user": user, "t": t, "lang": lang,
         "my_games": my_games, "joined_games": joined_games
     })
+
+
+@app.post("/set_city")
+async def set_city(request: Request, city: str = Form(...), db: Session = Depends(get_db)):
+    user = require_login(request)
+    if isinstance(user, RedirectResponse):
+        return user
+    user.city = city
+    db.commit()
+    return RedirectResponse("/profile", status_code=303)
 
 
 @app.post("/telegram_callback")

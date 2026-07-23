@@ -11,6 +11,7 @@ class User(Base):
     username = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     email = Column(String, unique=True)
+    city = Column(String, default="Минск")
     registered_at = Column(DateTime, default=datetime.utcnow)
     games_created = relationship("Game", back_populates="creator")
     players = relationship("Player", back_populates="user")
