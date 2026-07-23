@@ -155,6 +155,15 @@
                 e.preventDefault();
                 searchText = this.value;
                 showGrounds();
+                var s = searchText.toLowerCase();
+                var found = allGrounds.filter(function(g) {
+                    return g.address.toLowerCase().indexOf(s) !== -1 || g.name.toLowerCase().indexOf(s) !== -1;
+                });
+                if (found.length > 0) {
+                    map.setCenter([found[0].lat, found[0].lon], 15);
+                } else if (s) {
+                    alert('Адрес не найден');
+                }
             }
         });
         
