@@ -330,7 +330,7 @@ async def calendar(request: Request, db: Session = Depends(get_db)):
         }
     } for g in games])
     return templates.TemplateResponse("calendar.html", {
-        "request": request, "user": user, "t": t, "lang": lang, "games_json": games_json
+        "request": request, "user": user, "t": t, "lang": lang, "games_json": games_json, "games": games
     })
 
 
