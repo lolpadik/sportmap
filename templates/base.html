@@ -17,7 +17,6 @@
         [data-bs-theme="dark"] .modal-content { background-color: #16213e; color: #eee; }
         [data-bs-theme="dark"] .text-muted { color: #aaa !important; }
         .navbar { z-index: 1001 !important; }
-        .dropdown-menu { z-index: 1002 !important; }
     </style>
 </head>
 <body>
@@ -35,14 +34,9 @@
                     <a class="nav-link" href="/register?lang={{ lang }}">📝 {{ t.register }}</a>
                 {% endif %}
                 <button class="btn btn-sm btn-outline-light ms-2" id="themeToggle">🌙</button>
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">🌐 {{ t.language }}</a>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="?lang=ru">🇷🇺 Русский</a>
-                        <a class="dropdown-item" href="?lang=be">🇧🇾 Беларуская</a>
-                        <a class="dropdown-item" href="?lang=en">🇬🇧 English</a>
-                    </div>
-                </div>
+                <a class="nav-link d-inline px-1" href="?lang=ru" title="Русский">🇷🇺</a>
+                <a class="nav-link d-inline px-1" href="?lang=be" title="Беларуская">🇧🇾</a>
+                <a class="nav-link d-inline px-1" href="?lang=en" title="English">🇬🇧</a>
             </div>
         </div>
     </nav>
