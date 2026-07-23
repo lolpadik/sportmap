@@ -8,7 +8,9 @@
 <p>⭐ {{ t.rating }}: {{ ground.avg_rating }}/5 ({{ ground.total_ratings }} {{ t.ratings }})</p>
 
 {% if not user %}
-<p class="text-muted">🔒 <a href="/login?lang={{ lang }}">Войдите</a>, чтобы оценивать площадку и создавать игры</p>
+<div class="alert alert-info">
+    🔒 <a href="/login?lang={{ lang }}">Войдите</a> или <a href="/register?lang={{ lang }}">зарегистрируйтесь</a>, чтобы оценивать площадку и создавать игры
+</div>
 {% endif %}
 
 {% if user %}
