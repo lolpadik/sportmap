@@ -23,14 +23,14 @@
         <div class="container">
             <a class="navbar-brand" href="/?lang={{ lang }}">⚽ SportMap Belarus</a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/map?lang={{ lang }}">{{ t.map }}</a>
+                <a class="nav-link" href="/map?lang={{ lang }}">🗺️ {{ t.map }}</a>
                 <a class="nav-link" href="/stats?lang={{ lang }}">📊 Статистика</a>
                 {% if user %}
                     <a class="nav-link text-light" href="/profile?lang={{ lang }}">👤 {{ user.username }}</a>
-                    <a class="nav-link" href="/logout">{{ t.logout }}</a>
+                    <a class="nav-link" href="/logout">🚪 {{ t.logout }}</a>
                 {% else %}
-                    <a class="nav-link" href="/login?lang={{ lang }}">{{ t.login }}</a>
-                    <a class="nav-link" href="/register?lang={{ lang }}">{{ t.register }}</a>
+                    <a class="nav-link" href="/login?lang={{ lang }}">🔑 {{ t.login }}</a>
+                    <a class="nav-link" href="/register?lang={{ lang }}">📝 {{ t.register }}</a>
                 {% endif %}
                 <button class="btn btn-sm btn-outline-light ms-2" id="themeToggle">🌙</button>
                 <div class="nav-item dropdown">
