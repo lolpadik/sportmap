@@ -4,6 +4,7 @@
 <h2>{{ ground.name }}</h2>
 <p>{{ ground.sport_type }} | {{ ground.address }}</p>
 <p>{{ ground.description }}</p>
+<p>🎮 Всего игр на площадке: {{ total_games }}</p>
 <p>⭐ Рейтинг: {{ ground.avg_rating }}/5 ({{ ground.total_ratings }} оценок)</p>
 {% if user %}
 <form method="post" action="/rate_ground/{{ ground.id }}" class="d-flex align-items-center mb-2">

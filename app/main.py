@@ -102,6 +102,7 @@ async def show_map(request: Request, db: Session = Depends(get_db)):
         "id": g.id, "name": g.name, "sport_type": g.sport_type,
         "lat": g.latitude, "lon": g.longitude, "address": g.address,
         "description": g.description, "city": g.city,
+        "total_games": db.query(Game).filter(Game.ground_id == g.id).count(),
         "has_active": any(game.game_date <= now for game in g.games if game.players),
         "has_upcoming": any(game.game_date > now for game in g.games)
     } for g in grounds])
@@ -118,8 +119,9 @@ async def ground_detail(request: Request, ground_id: int, db: Session = Depends(
     if not ground:
         return RedirectResponse("/map", status_code=303)
     games = db.query(Game).filter(Game.ground_id == ground_id, Game.game_date >= datetime.utcnow()).all()
+    total_games = db.query(Game).filter(Game.ground_id == ground_id).count()
     return templates.TemplateResponse("game.html", {
-        "request": request, "user": user, "ground": ground, "games": games, "t": t, "lang": lang
+        "request": request, "user": user, "ground": ground, "games": games, "t": t, "lang": lang, "total_games": total_games
     })
 
 
@@ -182,6 +184,12 @@ async def create_game(request: Request, ground_id: int = Form(...), title: str =
                 max_players=max_players, description=description)
     db.add(game)
     db.commit()
+    # Уведомление создателю
+    bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
+    try:
+        bot.send_message("6886288656", f"🎮 Новая игра создана!\n{title}\nПлощадка: {game.ground.name}\nДата: {game_date}")
+    except:
+        pass
     return RedirectResponse(f"/ground/{ground_id}", status_code=303)
 
 
@@ -202,6 +210,12 @@ async def join_game(request: Request, game_id: int, db: Session = Depends(get_db
     new_player = Player(game_id=game_id, user_id=user.id)
     db.add(new_player)
     db.commit()
+    # Уведомление создателю игры
+    bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
+    try:
+        bot.send_message("6886288656", f"🔔 {user.username} записался на игру!\n{game.title}\nИгроков: {current_players+1}/{game.max_players}")
+    except:
+        pass
     return RedirectResponse(f"/ground/{game.ground_id}", status_code=303)
 
 
@@ -301,6 +315,20 @@ async def admin_delete_ground(request: Request, ground_id: int, db: Session = De
     return RedirectResponse("/admin", status_code=303)
 
 
+@app.get("/stats", response_class=HTMLResponse)
+async def stats(request: Request, db: Session = Depends(get_db)):
+    user = get_current_user(request)
+    lang, t = get_lang(request)
+    grounds = db.query(SportsGround).all()
+    sport_counts = {}
+    for g in grounds:
+        sport = g.sport_type
+        sport_counts[sport] = sport_counts.get(sport, 0) + 1
+    return templates.TemplateResponse("stats.html", {
+        "request": request, "user": user, "t": t, "lang": lang, "sport_counts": sport_counts
+    })
+
+
 @app.post("/chat_send")
 async def chat_send(request: Request, text: str = Form(...)):
     user = get_current_user(request)
@@ -334,7 +362,6 @@ async def telegram_callback(request: Request):
     body = await request.json()
     bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
     
-    # Обработка команды /admin
     message = body.get("message", {})
     if message:
         chat_id = message.get("chat", {}).get("id")
@@ -351,7 +378,6 @@ async def telegram_callback(request: Request):
             )
             bot.send_message(chat_id, "🛡️ Админ-панель", reply_markup=keyboard)
             return {"ok": True}
-        # Ответ админа на сообщение из чата
         if message.get("reply_to_message") and str(chat_id) == "6886288656":
             original = message.get("reply_to_message", {}).get("text", "")
             if "💬 Чат от" in original:
@@ -360,7 +386,6 @@ async def telegram_callback(request: Request):
                 bot.send_message(chat_id, "✅ Ответ отправлен пользователю")
                 return {"ok": True}
     
-    # Обработка callback'ов
     callback = body.get("callback_query", {})
     data = callback.get("data", "")
     chat_id = callback.get("message", {}).get("chat", {}).get("id")

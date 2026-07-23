@@ -24,6 +24,7 @@
             <a class="navbar-brand" href="/?lang={{ lang }}">⚽ SportMap Belarus</a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="/map?lang={{ lang }}">{{ t.map }}</a>
+                <a class="nav-link" href="/stats?lang={{ lang }}">📊 Статистика</a>
                 {% if user %}
                     <a class="nav-link text-light" href="/profile?lang={{ lang }}">👤 {{ user.username }}</a>
                     <a class="nav-link" href="/logout">{{ t.logout }}</a>
