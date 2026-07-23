@@ -6,6 +6,7 @@ from datetime import datetime
 import json
 import os
 import hashlib
+import glob
 import telebot
 
 from .database import get_db, init_db
@@ -269,6 +270,60 @@ async def rate_ground(request: Request, ground_id: int, score: int = Form(...), 
     return RedirectResponse(f"/ground/{ground_id}", status_code=303)
 
 
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_panel(request: Request, db: Session = Depends(get_db)):
+    user = require_login(request)
+    if isinstance(user, RedirectResponse):
+        return user
+    if user.id != 1:
+        return RedirectResponse("/", status_code=303)
+    lang, t = get_lang(request)
+    grounds = db.query(SportsGround).all()
+    users = db.query(User).all()
+    games = db.query(Game).all()
+    return templates.TemplateResponse("admin.html", {
+        "request": request, "user": user, "t": t, "lang": lang,
+        "grounds": grounds, "users": users, "games": games
+    })
+
+
+@app.post("/admin/delete_ground/{ground_id}")
+async def admin_delete_ground(request: Request, ground_id: int, db: Session = Depends(get_db)):
+    user = require_login(request)
+    if isinstance(user, RedirectResponse):
+        return user
+    if user.id != 1:
+        return RedirectResponse("/", status_code=303)
+    ground = db.query(SportsGround).filter(SportsGround.id == ground_id).first()
+    if ground:
+        db.delete(ground)
+        db.commit()
+    return RedirectResponse("/admin", status_code=303)
+
+
+@app.post("/telegram_admin")
+async def telegram_admin(request: Request):
+    body = await request.json()
+    message = body.get("message", {})
+    chat_id = message.get("chat", {}).get("id")
+    text = message.get("text", "")
+    bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
+    if str(chat_id) != "6886288656":
+        return {"ok": True}
+    if text == "/admin" or text == "/start":
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        keyboard.add(
+            telebot.types.InlineKeyboardButton("📋 Площадки", callback_data="admin_grounds"),
+            telebot.types.InlineKeyboardButton("👥 Пользователи", callback_data="admin_users")
+        )
+        keyboard.add(
+            telebot.types.InlineKeyboardButton("📊 Статистика", callback_data="admin_stats"),
+            telebot.types.InlineKeyboardButton("📩 Заявки", callback_data="admin_suggests")
+        )
+        bot.send_message(chat_id, "🛡️ Админ-панель", reply_markup=keyboard)
+    return {"ok": True}
+
+
 @app.post("/telegram_callback")
 async def telegram_callback(request: Request):
     body = await request.json()
@@ -277,6 +332,7 @@ async def telegram_callback(request: Request):
     chat_id = callback.get("message", {}).get("chat", {}).get("id")
     message_id = callback.get("message", {}).get("message_id")
     bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
+    
     if data.startswith("accept"):
         uid = data.split("|")[1]
         if os.path.exists(f"suggest_{uid}.txt"):
@@ -296,6 +352,38 @@ async def telegram_callback(request: Request):
             with open(f"suggest_{uid}.txt", "r", encoding="utf-8") as f:
                 name = f.read().split("|")[0]
             bot.edit_message_text(f"❌ Отклонено: {name}", chat_id, message_id)
+    elif data == "admin_grounds":
+        db = next(get_db())
+        grounds = db.query(SportsGround).all()
+        text = "📋 Все площадки:\n\n"
+        for g in grounds:
+            text += f"• {g.name} ({g.city})\n"
+        db.close()
+        bot.send_message(chat_id, text[:4000])
+    elif data == "admin_users":
+        db = next(get_db())
+        users = db.query(User).all()
+        text = f"👥 Пользователей: {len(users)}\n\n"
+        for u in users[:20]:
+            text += f"• {u.username} | {u.city}\n"
+        db.close()
+        bot.send_message(chat_id, text)
+    elif data == "admin_stats":
+        db = next(get_db())
+        grounds_count = db.query(SportsGround).count()
+        users_count = db.query(User).count()
+        games_count = db.query(Game).count()
+        db.close()
+        bot.send_message(chat_id, f"📊 Статистика:\n\n🏟️ Площадок: {grounds_count}\n👥 Пользователей: {users_count}\n🎮 Игр: {games_count}")
+    elif data == "admin_suggests":
+        files = glob.glob("suggest_*.txt")
+        if files:
+            for f in files[:10]:
+                with open(f, "r", encoding="utf-8") as file:
+                    bot.send_message(chat_id, file.read()[:500])
+        else:
+            bot.send_message(chat_id, "Нет заявок")
+    
     return {"ok": True}
 
 
