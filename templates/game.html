@@ -63,8 +63,8 @@
         <div class="modal-body">
             <input type="hidden" name="ground_id" value="{{ ground.id }}">
             <input type="text" name="title" class="form-control mb-2" placeholder="Название" required>
-            <input type="datetime-local" name="game_date" class="form-control mb-2" required>
-            <input type="number" name="max_players" class="form-control mb-2" value="10">
+            <input type="datetime-local" name="game_date" class="form-control mb-2" required value="2026-01-01T12:00">
+            <input type="number" name="max_players" class="form-control mb-2" value="10" placeholder="Макс. игроков">
             <textarea name="description" class="form-control mb-2" placeholder="Описание"></textarea>
         </div>
         <div class="modal-footer"><button class="btn btn-success">{{ t.create_game }}</button></div>

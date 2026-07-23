@@ -133,8 +133,11 @@ async def register(request: Request, username: str = Form(...), password: str = 
                    email: str = Form(...), db: Session = Depends(get_db)):
     lang, t = get_lang(request)
     existing = db.query(User).filter(User.username == username).first()
+    existing_email = db.query(User).filter(User.email == email).first()
     if existing:
         return templates.TemplateResponse("register.html", {"request": request, "error": "Пользователь уже существует", "t": t, "lang": lang})
+    if existing_email:
+        return templates.TemplateResponse("register.html", {"request": request, "error": "Эта почта уже используется", "t": t, "lang": lang})
     hashed = hash_password(password)
     user = User(username=username, hashed_password=hashed, email=email)
     db.add(user)
