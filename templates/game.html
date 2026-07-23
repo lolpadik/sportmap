@@ -4,6 +4,15 @@
 <h2>{{ ground.name }}</h2>
 <p>{{ ground.sport_type }} | {{ ground.address }}</p>
 <p>{{ ground.description }}</p>
+<p>⭐ Рейтинг: {{ ground.avg_rating }}/5 ({{ ground.total_ratings }} оценок)</p>
+{% if user %}
+<form method="post" action="/rate_ground/{{ ground.id }}" class="d-flex gap-1 align-items-center mb-2">
+    <span>Оценить:</span>
+    {% for i in [1,2,3,4,5] %}
+    <button name="score" value="{{ i }}" class="btn btn-sm {% if i <= ground.avg_rating|default(0)|round %}btn-warning{% else %}btn-outline-warning{% endif %}">⭐</button>
+    {% endfor %}
+</form>
+{% endif %}
 
 {% if user %}
 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createGameModal">{{ t.create_game }}</button>

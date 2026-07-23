@@ -16,6 +16,7 @@ class User(Base):
     games_created = relationship("Game", back_populates="creator")
     players = relationship("Player", back_populates="user")
     messages = relationship("ChatMessage", back_populates="user")
+    ratings = relationship("Rating", back_populates="user")
 
 class SportsGround(Base):
     __tablename__ = 'grounds'
@@ -27,8 +28,11 @@ class SportsGround(Base):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
     description = Column(String)
+    avg_rating = Column(Float, default=0)
+    total_ratings = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
     games = relationship("Game", back_populates="ground")
+    ratings = relationship("Rating", back_populates="ground")
 
 class Game(Base):
     __tablename__ = 'games'
@@ -63,3 +67,13 @@ class ChatMessage(Base):
     timestamp = Column(DateTime, default=datetime.utcnow)
     game = relationship("Game", back_populates="messages")
     user = relationship("User", back_populates="messages")
+
+class Rating(Base):
+    __tablename__ = 'ratings'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    ground_id = Column(Integer, ForeignKey('grounds.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    score = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    ground = relationship("SportsGround", back_populates="ratings")
+    user = relationship("User", back_populates="ratings")

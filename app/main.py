@@ -9,7 +9,7 @@ import hashlib
 import telebot
 
 from .database import get_db, init_db
-from .models import SportsGround, Game, User, Player, ChatMessage
+from .models import SportsGround, Game, User, Player, ChatMessage, Rating
 from .auth import hash_password, check_password, get_current_user, require_login
 from .translations import translations
 
@@ -243,6 +243,30 @@ async def set_city(request: Request, city: str = Form(...), db: Session = Depend
     db.commit()
     db.refresh(db_user)
     return RedirectResponse("/profile", status_code=303)
+
+
+@app.post("/rate_ground/{ground_id}")
+async def rate_ground(request: Request, ground_id: int, score: int = Form(...), db: Session = Depends(get_db)):
+    user = require_login(request)
+    if isinstance(user, RedirectResponse):
+        return user
+    ground = db.query(SportsGround).filter(SportsGround.id == ground_id).first()
+    if not ground:
+        return RedirectResponse("/map", status_code=303)
+    existing = db.query(Rating).filter(Rating.ground_id == ground_id, Rating.user_id == user.id).first()
+    if existing:
+        existing.score = score
+    else:
+        rating = Rating(ground_id=ground_id, user_id=user.id, score=score)
+        db.add(rating)
+        ground.total_ratings += 1
+    db.commit()
+    avg = db.query(Rating).filter(Rating.ground_id == ground_id).with_entities(
+        (Rating.score * 1.0).label('avg')
+    ).all()
+    ground.avg_rating = round(sum(a[0] for a in avg) / len(avg), 1)
+    db.commit()
+    return RedirectResponse(f"/ground/{ground_id}", status_code=303)
 
 
 @app.post("/telegram_callback")
