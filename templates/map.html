@@ -5,24 +5,24 @@
 
 <div class="d-flex flex-wrap gap-2 mb-2">
     <button class="btn btn-outline-warning btn-sm city-btn active" data-city="all">{{ t.all_cities }}</button>
-    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Минск">Минск</button>
-    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Гомель">Гомель</button>
-    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Могилёв">Могилёв</button>
-    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Брест">Брест</button>
-    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Гродно">Гродно</button>
-    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Витебск">Витебск</button>
+    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Минск">{{ t.city_minsk }}</button>
+    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Гомель">{{ t.city_gomel }}</button>
+    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Могилёв">{{ t.city_mogilev }}</button>
+    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Брест">{{ t.city_brest }}</button>
+    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Гродно">{{ t.city_grodno }}</button>
+    <button class="btn btn-outline-warning btn-sm city-btn" data-city="Витебск">{{ t.city_vitebsk }}</button>
 </div>
 
 <div class="d-flex flex-wrap gap-2 mb-2">
     <button class="btn btn-outline-info btn-sm sport-btn active" data-sport="all">{{ t.all_sports }}</button>
-    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="⚽ Футбол">⚽ Футбол</button>
-    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏀 Баскетбол">🏀 Баскетбол</button>
-    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏐 Волейбол">🏐 Волейбол</button>
-    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏒 Хоккей">🏒 Хоккей</button>
-    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🎾 Теннис">🎾 Теннис</button>
-    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏋️ Воркаут">🏋️ Воркаут</button>
-    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🛹 Скейтбординг">🛹 Скейтбординг</button>
-    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏃 Бег">🏃 Бег</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="⚽ Футбол">{{ t.sport_football }}</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏀 Баскетбол">{{ t.sport_basketball }}</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏐 Волейбол">{{ t.sport_volleyball }}</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏒 Хоккей">{{ t.sport_hockey }}</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🎾 Теннис">{{ t.sport_tennis }}</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏋️ Воркаут">{{ t.sport_workout }}</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🛹 Скейтбординг">{{ t.sport_skate }}</button>
+    <button class="btn btn-outline-info btn-sm sport-btn" data-sport="🏃 Бег">{{ t.sport_run }}</button>
 </div>
 
 <div class="mb-3">
@@ -46,17 +46,17 @@
             <input type="text" name="name" class="form-control mb-2" placeholder="Название" required>
             <select name="sport_type" class="form-control mb-2" required>
                 <option value="">Выберите вид спорта</option>
-                <option value="⚽ Футбол">⚽ Футбол</option>
-                <option value="🏀 Баскетбол">🏀 Баскетбол</option>
-                <option value="🏐 Волейбол">🏐 Волейбол</option>
-                <option value="🏒 Хоккей">🏒 Хоккей</option>
-                <option value="🎾 Теннис">🎾 Теннис</option>
+                <option value="⚽ Футбол">{{ t.sport_football }}</option>
+                <option value="🏀 Баскетбол">{{ t.sport_basketball }}</option>
+                <option value="🏐 Волейбол">{{ t.sport_volleyball }}</option>
+                <option value="🏒 Хоккей">{{ t.sport_hockey }}</option>
+                <option value="🎾 Теннис">{{ t.sport_tennis }}</option>
                 <option value="🏸 Бадминтон">🏸 Бадминтон</option>
                 <option value="🏓 Настольный теннис">🏓 Настольный теннис</option>
                 <option value="🥋 Единоборства">🥋 Единоборства</option>
-                <option value="🏋️ Воркаут">🏋️ Воркаут</option>
-                <option value="🛹 Скейтбординг">🛹 Скейтбординг</option>
-                <option value="🏃 Бег">🏃 Бег</option>
+                <option value="🏋️ Воркаут">{{ t.sport_workout }}</option>
+                <option value="🛹 Скейтбординг">{{ t.sport_skate }}</option>
+                <option value="🏃 Бег">{{ t.sport_run }}</option>
                 <option value="🚴 Велоспорт">🚴 Велоспорт</option>
                 <option value="🏊 Плавание">🏊 Плавание</option>
             </select>
