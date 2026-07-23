@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
-<h2>📊 Статистика видов спорта</h2>
+<h2>📊 Популярность видов спорта (по рейтингу)</h2>
 <div class="row mt-4">
-{% for sport, count in sport_counts.items() %}
+{% for sport, data in sport_stats.items() %}
 <div class="col-md-4 mb-3">
     <div class="card p-3">
         <h3>{{ sport }}</h3>
-        <h5>{{ count }} площадок</h5>
+        <h5>⭐ {{ data.avg }}/5</h5>
+        <p>{{ data.count }} площадок</p>
         <div class="progress mt-2" style="height: 10px;">
-            <div class="progress-bar bg-success" style="width: {{ (count / sport_counts.values()|sum * 100)|round }}%;"></div>
+            <div class="progress-bar bg-warning" style="width: {{ (data.avg / 5 * 100)|round }}%;"></div>
         </div>
     </div>
 </div>

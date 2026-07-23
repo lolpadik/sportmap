@@ -184,7 +184,6 @@ async def create_game(request: Request, ground_id: int = Form(...), title: str =
                 max_players=max_players, description=description)
     db.add(game)
     db.commit()
-    # Уведомление создателю
     bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
     try:
         bot.send_message("6886288656", f"🎮 Новая игра создана!\n{title}\nПлощадка: {game.ground.name}\nДата: {game_date}")
@@ -210,7 +209,6 @@ async def join_game(request: Request, game_id: int, db: Session = Depends(get_db
     new_player = Player(game_id=game_id, user_id=user.id)
     db.add(new_player)
     db.commit()
-    # Уведомление создателю игры
     bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
     try:
         bot.send_message("6886288656", f"🔔 {user.username} записался на игру!\n{game.title}\nИгроков: {current_players+1}/{game.max_players}")
@@ -320,12 +318,27 @@ async def stats(request: Request, db: Session = Depends(get_db)):
     user = get_current_user(request)
     lang, t = get_lang(request)
     grounds = db.query(SportsGround).all()
+    sport_ratings = {}
     sport_counts = {}
     for g in grounds:
         sport = g.sport_type
-        sport_counts[sport] = sport_counts.get(sport, 0) + 1
+        if sport not in sport_ratings:
+            sport_ratings[sport] = []
+            sport_counts[sport] = 0
+        sport_counts[sport] += 1
+        if g.avg_rating > 0:
+            sport_ratings[sport].append(g.avg_rating)
+    
+    sport_stats = {}
+    for sport in sport_ratings:
+        ratings = sport_ratings[sport]
+        avg = round(sum(ratings) / len(ratings), 1) if ratings else 0
+        sport_stats[sport] = {"avg": avg, "count": sport_counts[sport]}
+    
+    sport_stats = dict(sorted(sport_stats.items(), key=lambda x: x[1]["avg"], reverse=True))
+    
     return templates.TemplateResponse("stats.html", {
-        "request": request, "user": user, "t": t, "lang": lang, "sport_counts": sport_counts
+        "request": request, "user": user, "t": t, "lang": lang, "sport_stats": sport_stats
     })
 
 
