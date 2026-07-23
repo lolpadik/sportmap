@@ -55,11 +55,19 @@
             {{ t.chat_admin }}
             <button id="clearChat" style="background:none;border:none;color:#fff;font-size:16px;cursor:pointer;" title="{{ t.clear_chat }}">🗑️</button>
         </div>
-        <div id="chatMessages" style="flex:1;overflow-y:auto;padding:10px;color:#fff;"></div>
+        <div id="chatMessages" style="flex:1;overflow-y:auto;padding:10px;color:#fff;">
+            {% if not user %}
+            <p style="text-align:center;margin-top:50px;">
+                🔒 <a href="/login" style="color:#8b5cf6;">Войдите</a> или <a href="/register" style="color:#8b5cf6;">зарегистрируйтесь</a>, чтобы писать в чат
+            </p>
+            {% endif %}
+        </div>
+        {% if user %}
         <form id="chatForm" style="display:flex;padding:10px;gap:5px;" autocomplete="off">
             <input type="text" id="chatInput" class="form-control" placeholder="{{ t.type_message }}" required autocomplete="off">
             <button class="btn btn-sm" style="background:#8b5cf6;color:#fff;">➤</button>
         </form>
+        {% endif %}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -85,6 +93,7 @@
             document.getElementById('chatMessages').innerHTML += '<div style="text-align:' + side + ';margin:5px;"><span style="background:' + color + ';padding:5px 10px;border-radius:10px;">' + item.text + '</span></div>';
         });
         
+        {% if user %}
         document.getElementById('chatForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             var input = document.getElementById('chatInput');
@@ -96,6 +105,7 @@
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
             await fetch('/chat_send', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'text=' + encodeURIComponent(msg) });
         });
+        {% endif %}
         
         document.getElementById('clearChat').addEventListener('click', function() {
             document.getElementById('chatMessages').innerHTML = '';
@@ -103,6 +113,7 @@
             chatHistory = [];
         });
         
+        {% if user %}
         setInterval(async function() {
             var res = await fetch('/chat_check');
             var data = await res.json();
@@ -113,6 +124,7 @@
                 await fetch('/chat_clear');
             }
         }, 5000);
+        {% endif %}
     </script>
 </body>
 </html>
