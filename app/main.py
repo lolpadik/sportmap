@@ -35,6 +35,48 @@ async def startup():
         SportsGround(name="Стадион Динамо", sport_type="Футбол", city="Минск",
                      address="Минск, ул. Кирова, 8", latitude=53.8950, longitude=27.5590,
                      description="Главный стадион Беларуси"),
+        SportsGround(name="Минск-Арена", sport_type="Хоккей", city="Минск",
+                     address="Минск, пр. Победителей, 111", latitude=53.9361, longitude=27.4825,
+                     description="Крупнейшая ледовая арена"),
+        SportsGround(name="Чижовка-Арена", sport_type="Хоккей", city="Минск",
+                     address="Минск, ул. Ташкентская, 19", latitude=53.8420, longitude=27.6280,
+                     description="Ледовый дворец"),
+        SportsGround(name="Футбольный манеж", sport_type="Футбол", city="Минск",
+                     address="Минск, пр. Победителей, 20/2", latitude=53.9200, longitude=27.5200,
+                     description="Крытый футбольный манеж"),
+        SportsGround(name="Дворец спорта", sport_type="Хоккей", city="Минск",
+                     address="Минск, пр. Победителей, 4", latitude=53.9090, longitude=27.5480,
+                     description="Многофункциональная арена"),
+        SportsGround(name="Центральный стадион", sport_type="Футбол", city="Гомель",
+                     address="Гомель, пл. Восстания, 1", latitude=52.4250, longitude=31.0150,
+                     description="Главный стадион Гомеля"),
+        SportsGround(name="Ледовый дворец", sport_type="Хоккей", city="Гомель",
+                     address="Гомель, ул. Мазурова, 110", latitude=52.4550, longitude=30.9800,
+                     description="Ледовая арена Гомеля"),
+        SportsGround(name="Спартак", sport_type="Футбол", city="Могилёв",
+                     address="Могилёв, ул. Якубовского, 51", latitude=53.8950, longitude=30.3400,
+                     description="Стадион Спартак"),
+        SportsGround(name="Ледовый дворец", sport_type="Хоккей", city="Могилёв",
+                     address="Могилёв, ул. Гагарина, 1", latitude=53.9100, longitude=30.3200,
+                     description="Ледовая арена Могилёва"),
+        SportsGround(name="ОСК Брестский", sport_type="Футбол", city="Брест",
+                     address="Брест, ул. Гоголя, 9", latitude=52.0950, longitude=23.6850,
+                     description="Домашний стадион Динамо-Брест"),
+        SportsGround(name="Ледовый дворец", sport_type="Хоккей", city="Брест",
+                     address="Брест, ул. Московская, 151", latitude=52.1100, longitude=23.7200,
+                     description="Ледовая арена Бреста"),
+        SportsGround(name="ЦСК Неман", sport_type="Футбол", city="Гродно",
+                     address="Гродно, ул. Горького, 55", latitude=53.6800, longitude=23.8400,
+                     description="Стадион Неман"),
+        SportsGround(name="Ледовый дворец", sport_type="Хоккей", city="Гродно",
+                     address="Гродно, ул. Полиграфистов, 2", latitude=53.6950, longitude=23.8500,
+                     description="Ледовая арена Гродно"),
+        SportsGround(name="ЦСК Витебский", sport_type="Футбол", city="Витебск",
+                     address="Витебск, ул. Ленина, 50", latitude=55.1900, longitude=30.2100,
+                     description="Центральный спортивный комплекс"),
+        SportsGround(name="Ледовый дворец", sport_type="Хоккей", city="Витебск",
+                     address="Витебск, пр. Строителей, 23", latitude=55.2000, longitude=30.1800,
+                     description="Ледовая арена Витебска"),
     ]
     db.add_all(grounds)
     db.commit()
@@ -252,6 +294,7 @@ async def suggest_ground(request: Request, name: str = Form(...), sport_type: st
     keyboard.add(btn_yes, btn_no)
     try:
         bot.send_message("6886288656", text, reply_markup=keyboard)
-    except:
-        pass
+        print("Сообщение в Telegram отправлено")
+    except Exception as e:
+        print(f"Ошибка отправки в Telegram: {e}")
     return RedirectResponse("/map", status_code=303)
