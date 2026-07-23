@@ -148,6 +148,13 @@
             searchText = this.value;
             showGrounds();
         });
+        document.getElementById('searchInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchText = this.value;
+                showGrounds();
+            }
+        });
         
         map.events.add('click', function(e) {
             var coords = e.get('coords');
