@@ -26,7 +26,8 @@
 </div>
 
 <div class="mb-3">
-    <input type="text" id="searchInput" class="form-control" placeholder="🔍 {{ t.search }}">
+    <input type="text" id="searchInput" class="form-control" placeholder="🔍 {{ t.search }}" list="addressList" autocomplete="off">
+    <datalist id="addressList"></datalist>
 </div>
 
 <div id="map" style="height: 500px; border-radius: 15px;"></div>
@@ -149,6 +150,17 @@
         searchInput.addEventListener('input', function() {
             searchText = this.value;
             showGrounds();
+            var s = searchText.toLowerCase();
+            var matches = allGrounds.filter(function(g) {
+                return g.address.toLowerCase().indexOf(s) !== -1 || g.name.toLowerCase().indexOf(s) !== -1;
+            });
+            var datalist = document.getElementById('addressList');
+            datalist.innerHTML = '';
+            matches.slice(0, 5).forEach(function(g) {
+                var option = document.createElement('option');
+                option.value = g.address + ' - ' + g.name;
+                datalist.appendChild(option);
+            });
         });
         searchInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
