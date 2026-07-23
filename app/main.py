@@ -313,32 +313,30 @@ async def chat_send(request: Request, text: str = Form(...)):
     return {"ok": True}
 
 
-@app.post("/telegram_admin")
-async def telegram_admin(request: Request):
-    body = await request.json()
-    message = body.get("message", {})
-    chat_id = message.get("chat", {}).get("id")
-    text = message.get("text", "")
-    bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
-    if str(chat_id) != "6886288656":
-        return {"ok": True}
-    if text == "/admin" or text == "/start":
-        keyboard = telebot.types.InlineKeyboardMarkup()
-        keyboard.add(
-            telebot.types.InlineKeyboardButton("📋 Площадки", callback_data="admin_grounds"),
-            telebot.types.InlineKeyboardButton("👥 Пользователи", callback_data="admin_users")
-        )
-        keyboard.add(
-            telebot.types.InlineKeyboardButton("📊 Статистика", callback_data="admin_stats"),
-            telebot.types.InlineKeyboardButton("📩 Заявки", callback_data="admin_suggests")
-        )
-        bot.send_message(chat_id, "🛡️ Админ-панель", reply_markup=keyboard)
-    return {"ok": True}
-
-
 @app.post("/telegram_callback")
 async def telegram_callback(request: Request):
     body = await request.json()
+    
+    # Обработка команды /admin
+    message = body.get("message", {})
+    if message:
+        chat_id = message.get("chat", {}).get("id")
+        text = message.get("text", "")
+        bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
+        if text == "/admin" and str(chat_id) == "6886288656":
+            keyboard = telebot.types.InlineKeyboardMarkup()
+            keyboard.add(
+                telebot.types.InlineKeyboardButton("📋 Площадки", callback_data="admin_grounds"),
+                telebot.types.InlineKeyboardButton("👥 Пользователи", callback_data="admin_users")
+            )
+            keyboard.add(
+                telebot.types.InlineKeyboardButton("📊 Статистика", callback_data="admin_stats"),
+                telebot.types.InlineKeyboardButton("📩 Заявки", callback_data="admin_suggests")
+            )
+            bot.send_message(chat_id, "🛡️ Админ-панель", reply_markup=keyboard)
+            return {"ok": True}
+    
+    # Обработка callback'ов
     callback = body.get("callback_query", {})
     data = callback.get("data", "")
     chat_id = callback.get("message", {}).get("chat", {}).get("id")
