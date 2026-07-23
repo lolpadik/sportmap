@@ -4,7 +4,6 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from datetime import datetime
 import json
-import os
 import telebot
 
 from .database import get_db, init_db
@@ -26,8 +25,6 @@ def get_lang(request: Request):
 
 @app.on_event("startup")
 async def startup():
-    if os.path.exists("sportmap.db"):
-        os.remove("sportmap.db")
     init_db()
     db = next(get_db())
     if db.query(SportsGround).count() == 0:
