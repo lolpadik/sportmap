@@ -29,45 +29,9 @@ async def startup():
     db = next(get_db())
     if db.query(SportsGround).count() == 0:
         grounds = [
-            SportsGround(name="Футбольное поле в Парке Горького", sport_type="Футбол",
-                         address="Минск, ул. Фрунзе, 2", latitude=53.9045, longitude=27.5615,
-                         description="Хорошее поле с травяным покрытием, воротами и разметкой"),
-            SportsGround(name="Баскетбольная площадка у Комаровского рынка", sport_type="Баскетбол",
-                         address="Минск, ул. Хоружей, 8", latitude=53.9172, longitude=27.5778,
-                         description="Открытая площадка с кольцами и щитами"),
-            SportsGround(name="Воркаут площадка на Немиге", sport_type="Воркаут",
-                         address="Минск, ул. Немига, 30", latitude=53.9041, longitude=27.5524,
-                         description="Турники, брусья, шведская стенка"),
-            SportsGround(name="Футбольное поле Серебрянка", sport_type="Футбол",
-                         address="Минск, ул. Плеханова, 80", latitude=53.8700, longitude=27.6100,
-                         description="Поле с искусственным покрытием"),
-            SportsGround(name="Хоккейная коробка в Чижовке", sport_type="Хоккей",
-                         address="Минск, ул. Ташкентская, 33", latitude=53.8450, longitude=27.6200,
-                         description="Открытая коробка, зимой заливают лёд"),
-            SportsGround(name="Теннисные корты в Лошице", sport_type="Теннис",
-                         address="Минск, ул. Чижевских, 10", latitude=53.8500, longitude=27.5800,
-                         description="Два корта с хорошим покрытием"),
-            SportsGround(name="Волейбольная площадка на пляже", sport_type="Волейбол",
-                         address="Минск, Цнянское водохранилище", latitude=53.9500, longitude=27.5200,
-                         description="Песчаная площадка у воды"),
-            SportsGround(name="Скейт-парк в Дроздах", sport_type="Скейтбординг",
-                         address="Минск, ул. Орловская, 80", latitude=53.9300, longitude=27.5300,
-                         description="Рампы, перила, бетонный парк"),
-            SportsGround(name="Беговая дорожка в Севастопольском парке", sport_type="Бег",
-                         address="Минск, Севастопольский парк", latitude=53.8850, longitude=27.5450,
-                         description="Резиновое покрытие, 400 метров"),
-            SportsGround(name="Футбольное поле Уручье", sport_type="Футбол",
-                         address="Минск, ул. Шугаева, 15", latitude=53.9400, longitude=27.6500,
-                         description="Поле с искусственной травой"),
-            SportsGround(name="Баскетбол в Парке 50-летия Октября", sport_type="Баскетбол",
-                         address="Минск, ул. Бельского, 60", latitude=53.8700, longitude=27.5200,
-                         description="Площадка с новыми кольцами"),
-            SportsGround(name="Workout зона в Степянке", sport_type="Воркаут",
-                         address="Минск, ул. Карвата, 11", latitude=53.9100, longitude=27.5900,
-                         description="Современные турники и брусья"),
-            SportsGround(name="Стадион Динамо (национальный)", sport_type="Футбол",
+            SportsGround(name="Стадион Динамо", sport_type="Футбол", city="Минск",
                          address="Минск, ул. Кирова, 8", latitude=53.8950, longitude=27.5590,
-                         description="Главный стадион Беларуси, реконструирован в 2018 году"),
+                         description="Главный стадион Беларуси"),
         ]
         db.add_all(grounds)
         db.commit()
@@ -90,7 +54,7 @@ async def show_map(request: Request, db: Session = Depends(get_db)):
     grounds_json = json.dumps([{
         "id": g.id, "name": g.name, "sport_type": g.sport_type,
         "lat": g.latitude, "lon": g.longitude, "address": g.address,
-        "description": g.description,
+        "description": g.description, "city": g.city,
         "has_active": any(game.game_date <= now for game in g.games if game.players),
         "has_upcoming": any(game.game_date > now for game in g.games)
     } for g in grounds])

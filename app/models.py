@@ -21,6 +21,7 @@ class SportsGround(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
     sport_type = Column(String)
+    city = Column(String, default="Минск")
     address = Column(String)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)

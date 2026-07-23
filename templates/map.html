@@ -2,6 +2,18 @@
 {% block content %}
 <div class="container mt-4">
 <h2 class="mb-4">{{ t.map }}</h2>
+
+<!-- Кнопки выбора города -->
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <button class="btn btn-outline-light btn-sm city-btn active" data-city="all">Все</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="minsk">Минск</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="gomel">Гомель</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="mogilev">Могилёв</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="brest">Брест</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="grodno">Гродно</button>
+    <button class="btn btn-outline-light btn-sm city-btn" data-city="vitebsk">Витебск</button>
+</div>
+
 <div id="map" style="height: 500px; border-radius: 15px;"></div>
 <p class="text-muted mt-2">Кликни на карту чтобы предложить новую площадку в этом месте</p>
 {% if user %}
@@ -35,27 +47,62 @@
     ymaps.ready(function () {
         var map = new ymaps.Map('map', {
             center: [53.9, 27.56],
-            zoom: 11
+            zoom: 7
         });
         
-        var grounds = {{ grounds_json | safe }};
-        grounds.forEach(function(g) {
-            var color, status;
-            if (g.has_active) { color = 'islands#greenCircleIcon'; status = '🟢 Идёт игра'; }
-            else if (g.has_upcoming) { color = 'islands#yellowCircleIcon'; status = '🟡 Предстоит игра'; }
-            else { color = 'islands#blueCircleIcon'; status = '🔵 Нет игр'; }
-            var pm = new ymaps.Placemark([g.lat, g.lon], {
-                balloonContent: '<b>' + g.name + '</b><br><i>' + g.sport_type + '</i><br>' + g.address + '<br>' + status + '<br><a href="/ground/' + g.id + '?lang={{ lang }}">Подробнее</a>'
-            }, { preset: color });
-            map.geoObjects.add(pm);
+        var allGrounds = {{ grounds_json | safe }};
+        var activeGrounds = [];
+        
+        var cityCoords = {
+            'minsk': [53.9, 27.56],
+            'gomel': [52.43, 31.0],
+            'mogilev': [53.9, 30.33],
+            'brest': [52.1, 23.7],
+            'grodno': [53.68, 23.83],
+            'vitebsk': [55.19, 30.2]
+        };
+        
+        function showGrounds(city) {
+            map.geoObjects.removeAll();
+            if (city === 'all') {
+                activeGrounds = allGrounds;
+            } else {
+                activeGrounds = allGrounds.filter(function(g) {
+                    return g.city === city;
+                });
+            }
+            activeGrounds.forEach(function(g) {
+                var color, status;
+                if (g.has_active) { color = 'islands#greenCircleIcon'; status = '🟢 Идёт игра'; }
+                else if (g.has_upcoming) { color = 'islands#yellowCircleIcon'; status = '🟡 Предстоит игра'; }
+                else { color = 'islands#blueCircleIcon'; status = '🔵 Нет игр'; }
+                var pm = new ymaps.Placemark([g.lat, g.lon], {
+                    balloonContent: '<b>' + g.name + '</b><br><i>' + g.sport_type + '</i><br>' + g.address + '<br>' + status + '<br><a href="/ground/' + g.id + '?lang={{ lang }}">Подробнее</a>'
+                }, { preset: color });
+                map.geoObjects.add(pm);
+            });
+        }
+        
+        showGrounds('all');
+        
+        document.querySelectorAll('.city-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.city-btn').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                var city = this.dataset.city;
+                showGrounds(city);
+                if (city !== 'all') {
+                    map.setCenter(cityCoords[city], 12);
+                } else {
+                    map.setCenter([53.9, 27.56], 7);
+                }
+            });
         });
         
-        // Клик по карте — заполняем координаты
         map.events.add('click', function(e) {
             var coords = e.get('coords');
             document.getElementById('latInput').value = coords[0].toFixed(6);
             document.getElementById('lonInput').value = coords[1].toFixed(6);
-            // Открываем модальное окно
             var modal = new bootstrap.Modal(document.getElementById('suggestModal'));
             modal.show();
         });
