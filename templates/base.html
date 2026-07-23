@@ -36,9 +36,9 @@
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">🌐 {{ t.language }}</a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="?lang=ru">🇷🇺 Русский</a>
-                        <a class="dropdown-item" href="?lang=be">🇧🇾 Беларуская</a>
-                        <a class="dropdown-item" href="?lang=en">🇬🇧 English</a>
+                        <a class="dropdown-item lang-switch" href="#" data-lang="ru">🇷🇺 Русский</a>
+                        <a class="dropdown-item lang-switch" href="#" data-lang="be">🇧🇾 Беларуская</a>
+                        <a class="dropdown-item lang-switch" href="#" data-lang="en">🇬🇧 English</a>
                     </div>
                 </div>
             </div>
@@ -112,6 +112,15 @@
                 await fetch('/chat_clear');
             }
         }, 5000);
+        
+        document.querySelectorAll('.lang-switch').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                var url = new URL(window.location.href);
+                url.searchParams.set('lang', this.dataset.lang);
+                window.location.href = url.toString();
+            });
+        });
     </script>
 </body>
 </html>
