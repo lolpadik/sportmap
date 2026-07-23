@@ -301,6 +301,18 @@ async def admin_delete_ground(request: Request, ground_id: int, db: Session = De
     return RedirectResponse("/admin", status_code=303)
 
 
+@app.post("/chat_send")
+async def chat_send(request: Request, text: str = Form(...)):
+    user = get_current_user(request)
+    username = user.username if user else "Гость"
+    bot = telebot.TeleBot("8660797791:AAEdd9BY2YbEDlItlEhJARFREZtnb7Gw61I")
+    try:
+        bot.send_message("6886288656", f"💬 Чат от {username}:\n{text}")
+    except:
+        pass
+    return {"ok": True}
+
+
 @app.post("/telegram_admin")
 async def telegram_admin(request: Request):
     body = await request.json()
