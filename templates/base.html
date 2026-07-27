@@ -51,7 +51,8 @@
         .alert { border-radius: 15px !important; }
         .badge { border-radius: 20px !important; }
         #map { border-radius: 20px !important; }
-        #chatBox { border-radius: 20px !important; }
+        #chatBox { border-radius: 20px !important; transform: scale(0); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
+        #chatBox.show { transform: scale(1); opacity: 1; display: flex !important; }
         #chatBox > div:first-child { border-radius: 20px 20px 0 0 !important; }
         #chatBtn { border-radius: 50% !important; transition: transform 0.2s, box-shadow 0.2s; }
         #chatBtn:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(139,92,246,0.5); }
@@ -129,9 +130,15 @@
             localStorage.setItem('theme', newTheme);
             this.innerHTML = newTheme === 'dark' ? '<i class="ph ph-sun"></i>' : '<i class="ph ph-moon"></i>';
         });
+        var chatBox = document.getElementById('chatBox');
         document.getElementById('chatBtn').addEventListener('click', function() {
-            var box = document.getElementById('chatBox');
-            box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+            if (chatBox.classList.contains('show')) {
+                chatBox.classList.remove('show');
+                setTimeout(function() { chatBox.style.display = 'none'; }, 300);
+            } else {
+                chatBox.style.display = 'flex';
+                setTimeout(function() { chatBox.classList.add('show'); }, 10);
+            }
         });
         var chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
         chatHistory.forEach(function(item) {
