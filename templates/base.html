@@ -8,7 +8,6 @@
     <style>
         [data-bs-theme="dark"] body { background-color: #1a1a2e; color: #eee; }
         [data-bs-theme="dark"] .card { background-color: #16213e; color: #eee; }
-        [data-bs-theme="dark"] .navbar { background: #0f3460 !important; }
         [data-bs-theme="dark"] .btn-outline-warning { color: #ffc107; border-color: #ffc107; }
         [data-bs-theme="dark"] .btn-outline-info { color: #0dcaf0; border-color: #0dcaf0; }
         [data-bs-theme="dark"] .btn-outline-warning.active { background-color: #ffc107; color: #000; }
@@ -16,7 +15,11 @@
         [data-bs-theme="dark"] .form-control { background-color: #16213e; color: #eee; border-color: #333; }
         [data-bs-theme="dark"] .modal-content { background-color: #16213e; color: #eee; }
         [data-bs-theme="dark"] .text-muted { color: #aaa !important; }
-        .navbar { z-index: 1001 !important; }
+        .navbar { z-index: 1001 !important; background-color: #d1fae5 !important; }
+        .navbar .nav-link { color: #065f46 !important; }
+        .navbar .navbar-brand { color: #065f46 !important; }
+        .navbar .btn-outline-light { color: #065f46 !important; border-color: #065f46 !important; }
+        .navbar .dropdown-toggle { color: #065f46 !important; }
         .navbar-brand img { height: 40px; }
     </style>
 </head>
@@ -29,7 +32,7 @@
                 <a class="nav-link" href="/stats?lang={{ lang }}">📊 {{ t.stats }}</a>
                 <a class="nav-link" href="/calendar?lang={{ lang }}">📅 Календарь</a>
                 {% if user %}
-                    <a class="nav-link text-light" href="/profile?lang={{ lang }}">👤 {{ user.username }}</a>
+                    <a class="nav-link" href="/profile?lang={{ lang }}">👤 {{ user.username }}</a>
                     <a class="nav-link" href="/logout">🚪 {{ t.logout }}</a>
                 {% else %}
                     <a class="nav-link" href="/login?lang={{ lang }}">🔑 {{ t.login }}</a>
