@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="col-md-4 mx-auto mt-5">
-    <h2>{{ t.register }}</h2>
+    <h2><i class="ph ph-user-plus"></i> {{ t.register }}</h2>
     {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
     <form method="post" id="registerForm">
         <input type="text" name="username" class="form-control mb-2" placeholder="{{ t.username }}" required>
@@ -16,13 +16,13 @@
         </div>
         
         <div class="mb-3" id="requirements">
-            <small id="req1" class="text-muted d-block">❌ Минимум 6 символов</small>
-            <small id="req2" class="text-muted d-block">❌ Заглавная буква</small>
-            <small id="req3" class="text-muted d-block">❌ Цифра</small>
-            <small id="req4" class="text-muted d-block">❌ Спецсимвол</small>
+            <small id="req1" class="text-muted d-block"><i class="ph ph-x-circle"></i> Минимум 6 символов</small>
+            <small id="req2" class="text-muted d-block"><i class="ph ph-x-circle"></i> Заглавная буква</small>
+            <small id="req3" class="text-muted d-block"><i class="ph ph-x-circle"></i> Цифра</small>
+            <small id="req4" class="text-muted d-block"><i class="ph ph-x-circle"></i> Спецсимвол</small>
         </div>
         
-        <button class="btn btn-success w-100" id="submitBtn" disabled>{{ t.register }}</button>
+        <button class="btn btn-success w-100" id="submitBtn" disabled><i class="ph ph-check"></i> {{ t.register }}</button>
     </form>
 </div>
 
@@ -41,17 +41,17 @@ password.addEventListener('input', function() {
     var val = password.value;
     var score = 0;
     
-    if (val.length >= 6) { req1.innerHTML = '✅ Минимум 6 символов'; req1.className = 'text-success d-block'; score++; }
-    else { req1.innerHTML = '❌ Минимум 6 символов'; req1.className = 'text-muted d-block'; }
+    if (val.length >= 6) { req1.innerHTML = '<i class="ph ph-check-circle"></i> Минимум 6 символов'; req1.className = 'text-success d-block'; score++; }
+    else { req1.innerHTML = '<i class="ph ph-x-circle"></i> Минимум 6 символов'; req1.className = 'text-muted d-block'; }
     
-    if (/[A-ZА-ЯЁ]/.test(val)) { req2.innerHTML = '✅ Заглавная буква'; req2.className = 'text-success d-block'; score++; }
-    else { req2.innerHTML = '❌ Заглавная буква'; req2.className = 'text-muted d-block'; }
+    if (/[A-ZА-ЯЁ]/.test(val)) { req2.innerHTML = '<i class="ph ph-check-circle"></i> Заглавная буква'; req2.className = 'text-success d-block'; score++; }
+    else { req2.innerHTML = '<i class="ph ph-x-circle"></i> Заглавная буква'; req2.className = 'text-muted d-block'; }
     
-    if (/[0-9]/.test(val)) { req3.innerHTML = '✅ Цифра'; req3.className = 'text-success d-block'; score++; }
-    else { req3.innerHTML = '❌ Цифра'; req3.className = 'text-muted d-block'; }
+    if (/[0-9]/.test(val)) { req3.innerHTML = '<i class="ph ph-check-circle"></i> Цифра'; req3.className = 'text-success d-block'; score++; }
+    else { req3.innerHTML = '<i class="ph ph-x-circle"></i> Цифра'; req3.className = 'text-muted d-block'; }
     
-    if (/[^A-Za-zА-Яа-яЁё0-9]/.test(val)) { req4.innerHTML = '✅ Спецсимвол'; req4.className = 'text-success d-block'; score++; }
-    else { req4.innerHTML = '❌ Спецсимвол'; req4.className = 'text-muted d-block'; }
+    if (/[^A-Za-zА-Яа-яЁё0-9]/.test(val)) { req4.innerHTML = '<i class="ph ph-check-circle"></i> Спецсимвол'; req4.className = 'text-success d-block'; score++; }
+    else { req4.innerHTML = '<i class="ph ph-x-circle"></i> Спецсимвол'; req4.className = 'text-muted d-block'; }
     
     var percent = score * 25;
     strength.style.width = percent + '%';

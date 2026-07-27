@@ -172,7 +172,10 @@
                     div.style.padding = '8px 12px';
                     div.style.cursor = 'pointer';
                     div.style.borderBottom = '1px solid #eee';
+                    div.style.transition = 'background 0.15s';
                     div.textContent = g.address + ' - ' + g.name;
+                    div.addEventListener('mouseenter', function() { this.style.background = '#e2e8f0'; });
+                    div.addEventListener('mouseleave', function() { this.style.background = ''; });
                     div.addEventListener('click', function() {
                         searchInput.value = g.address;
                         searchText = g.address;

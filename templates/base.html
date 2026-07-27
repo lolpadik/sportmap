@@ -54,6 +54,8 @@
         #chatBox > div:first-child { border-radius: 20px 20px 0 0 !important; }
         #chatBtn { border-radius: 50% !important; transition: transform 0.2s, box-shadow 0.2s; }
         #chatBtn:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(139,92,246,0.5); }
+        #clearChat { background: none; border: none; color: #fff; font-size: 16px; cursor: pointer; transition: transform 0.2s; }
+        #clearChat:hover { transform: scale(1.3); }
         input, select, textarea { border-radius: 15px !important; }
         .dropdown-menu { border-radius: 15px !important; }
         .dropdown-item { transition: all 0.15s; }
@@ -61,8 +63,6 @@
         .progress { border-radius: 10px !important; }
         .progress-bar { border-radius: 10px !important; }
         .ph { font-size: 1.2em; vertical-align: middle; }
-        a { transition: color 0.2s; }
-        a:hover { color: #8b5cf6 !important; }
     </style>
 </head>
 <body>
@@ -100,7 +100,7 @@
     <div id="chatBox" style="position:fixed;bottom:90px;right:20px;width:300px;height:400px;background:#1e293b;box-shadow:0 0 20px rgba(0,0,0,0.5);z-index:999;display:none;flex-direction:column;">
         <div style="background:#8b5cf6;padding:10px;color:#fff;font-weight:bold;display:flex;justify-content:space-between;align-items:center;">
             {{ t.chat_admin }}
-            <button id="clearChat" style="background:none;border:none;color:#fff;font-size:16px;cursor:pointer;" title="{{ t.clear_chat }}"><i class="ph ph-trash"></i></button>
+            <button id="clearChat" title="{{ t.clear_chat }}"><i class="ph ph-trash"></i></button>
         </div>
         <div id="chatMessages" style="flex:1;overflow-y:auto;padding:10px;color:#fff;">
             {% if not user %}
