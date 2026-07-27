@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Form, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from datetime import datetime
 import json
@@ -16,6 +17,7 @@ from .auth import hash_password, check_password, get_current_user, require_login
 from .translations import translations
 
 app = FastAPI(title="SportMap Belarus")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 from starlette.middleware.sessions import SessionMiddleware
