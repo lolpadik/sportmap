@@ -35,7 +35,8 @@
         .navbar .nav-link:hover { background-color: #bcf5d5; }
         .navbar .navbar-brand { color: #065f46; }
         .navbar .btn-outline-light { color: #065f46; border-color: #065f46; border-radius: 50%; width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center; }
-        .navbar .dropdown-toggle { color: #065f46; display: flex; align-items: center; gap: 6px; }
+        .navbar .dropdown-toggle { color: #065f46; display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 30px; }
+        .navbar .dropdown-toggle:hover { background-color: #bcf5d5; }
         .navbar-brand img { height: 40px; }
         .btn { border-radius: 30px !important; }
         .card { border-radius: 20px !important; }
@@ -48,7 +49,7 @@
         #chatBox > div:first-child { border-radius: 20px 20px 0 0 !important; }
         #chatBtn { border-radius: 50% !important; }
         input, select, textarea { border-radius: 15px !important; }
-        .dropdown-menu { border-radius: 15px !important; border: 2px solid #d1fae5 !important; box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important; }
+        .dropdown-menu { border-radius: 15px !important; }
         .progress { border-radius: 10px !important; }
         .progress-bar { border-radius: 10px !important; }
         .ph { font-size: 1.2em; vertical-align: middle; }
@@ -70,7 +71,7 @@
                     <a class="nav-link" href="/register?lang={{ lang }}"><i class="ph ph-user-plus"></i> {{ t.register }}</a>
                 {% endif %}
                 <button class="btn btn-sm btn-outline-light ms-2" id="themeToggle"><i class="ph ph-moon"></i></button>
-                <div class="nav-item dropdown" onmouseover="this.querySelector('.dropdown-menu').classList.add('show')" onmouseleave="this.querySelector('.dropdown-menu').classList.remove('show')">
+                <div class="nav-item dropdown ms-2" onmouseover="this.querySelector('.dropdown-menu').classList.add('show')" onmouseleave="this.querySelector('.dropdown-menu').classList.remove('show')">
                     <span class="nav-link dropdown-toggle" style="cursor:pointer;"><i class="ph ph-translate"></i></span>
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item" href="?lang=ru">Русский</a>
