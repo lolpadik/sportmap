@@ -28,12 +28,27 @@
         [data-bs-theme="dark"] .alert-info { background-color: #3d2039; color: #eee; border-color: #38bdf8; }
         [data-bs-theme="dark"] #searchSuggestions { background-color: #3d2039; color: #eee; }
         [data-bs-theme="dark"] #searchSuggestions div { border-color: #5a3055; }
-        .navbar { z-index: 1001; background-color: #d1fae5; }
-        .navbar .nav-link { color: #065f46; }
+        .navbar { z-index: 1001; background-color: #d1fae5; border-radius: 0 0 20px 20px; }
+        .navbar .nav-link { color: #065f46; border-radius: 30px; padding: 8px 16px; transition: 0.2s; }
+        .navbar .nav-link:hover { background-color: #bcf5d5; }
         .navbar .navbar-brand { color: #065f46; }
-        .navbar .btn-outline-light { color: #065f46; border-color: #065f46; }
+        .navbar .btn-outline-light { color: #065f46; border-color: #065f46; border-radius: 30px; }
         .navbar .dropdown-toggle { color: #065f46; }
         .navbar-brand img { height: 40px; }
+        .btn { border-radius: 30px !important; }
+        .card { border-radius: 20px !important; }
+        .form-control { border-radius: 15px !important; }
+        .modal-content { border-radius: 25px !important; }
+        .alert { border-radius: 15px !important; }
+        .badge { border-radius: 20px !important; }
+        #map { border-radius: 20px !important; }
+        #chatBox { border-radius: 20px !important; }
+        #chatBox > div:first-child { border-radius: 20px 20px 0 0 !important; }
+        #chatBtn { border-radius: 50% !important; }
+        input, select, textarea { border-radius: 15px !important; }
+        .dropdown-menu { border-radius: 15px !important; }
+        .progress { border-radius: 10px !important; }
+        .progress-bar { border-radius: 10px !important; }
     </style>
 </head>
 <body>
@@ -67,9 +82,9 @@
         {% block content %}{% endblock %}
     </div>
 
-    <button id="chatBtn" style="position:fixed;bottom:20px;right:20px;width:60px;height:60px;border-radius:50%;background:#8b5cf6;color:#fff;border:none;font-size:24px;z-index:999;">💬</button>
-    <div id="chatBox" style="position:fixed;bottom:90px;right:20px;width:300px;height:400px;background:#1e293b;border-radius:15px;box-shadow:0 0 20px rgba(0,0,0,0.5);z-index:999;display:none;flex-direction:column;">
-        <div style="background:#8b5cf6;padding:10px;border-radius:15px 15px 0 0;color:#fff;font-weight:bold;display:flex;justify-content:space-between;align-items:center;">
+    <button id="chatBtn" style="position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#8b5cf6;color:#fff;border:none;font-size:24px;z-index:999;">💬</button>
+    <div id="chatBox" style="position:fixed;bottom:90px;right:20px;width:300px;height:400px;background:#1e293b;box-shadow:0 0 20px rgba(0,0,0,0.5);z-index:999;display:none;flex-direction:column;">
+        <div style="background:#8b5cf6;padding:10px;color:#fff;font-weight:bold;display:flex;justify-content:space-between;align-items:center;">
             {{ t.chat_admin }}
             <button id="clearChat" style="background:none;border:none;color:#fff;font-size:16px;cursor:pointer;" title="{{ t.clear_chat }}">🗑️</button>
         </div>
