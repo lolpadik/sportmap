@@ -84,7 +84,7 @@
         {% block content %}{% endblock %}
     </div>
 
-    <button id="chatBtn" style="position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#8b5cf6;color:#fff;border:none;font-size:24px;z-index:999;"><i class="ph ph-chat-circle-dots"></i></button>
+    <button id="chatBtn" style="position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#8b5cf6;color:#fff;border:none;font-size:24px;z-index:999;display:flex;align-items:center;justify-content:center;"><i class="ph ph-chat-circle-dots"></i></button>
     <div id="chatBox" style="position:fixed;bottom:90px;right:20px;width:300px;height:400px;background:#1e293b;box-shadow:0 0 20px rgba(0,0,0,0.5);z-index:999;display:none;flex-direction:column;">
         <div style="background:#8b5cf6;padding:10px;color:#fff;font-weight:bold;display:flex;justify-content:space-between;align-items:center;">
             {{ t.chat_admin }}
