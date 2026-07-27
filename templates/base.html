@@ -84,8 +84,8 @@
                     <a class="nav-link" href="/register?lang={{ lang }}"><i class="ph ph-user-plus"></i> {{ t.register }}</a>
                 {% endif %}
                 <button class="btn btn-sm btn-outline-light ms-2" id="themeToggle"><i class="ph ph-moon"></i></button>
-                <div class="nav-item dropdown ms-2" onmouseover="this.querySelector('.dropdown-menu').classList.add('show')" onmouseleave="this.querySelector('.dropdown-menu').classList.remove('show')">
-                    <span class="nav-link dropdown-toggle" style="cursor:pointer;"><i class="ph ph-translate"></i></span>
+                <div class="nav-item dropdown ms-2">
+                    <span class="nav-link dropdown-toggle" style="cursor:pointer;" onclick="this.parentElement.querySelector('.dropdown-menu').classList.toggle('show')"><i class="ph ph-translate"></i></span>
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item" href="?lang=ru">Русский</a>
                         <a class="dropdown-item" href="?lang=be">Беларуская</a>
