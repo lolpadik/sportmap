@@ -62,12 +62,16 @@
     .icon-4 { animation: slideInRight 0.8s ease-out 0.4s both; font-size: clamp(1.5rem, 4vw, 2rem); }
     .icon-5 { animation: slideInRight 0.8s ease-out 0.3s both; font-size: clamp(1.5rem, 4vw, 2rem); }
     .icon-6 { animation: slideInRight 0.8s ease-out 0.2s both; font-size: clamp(1.5rem, 4vw, 2rem); }
+    .hero-bg {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        background: #ffffff;
+    }
+    [data-bs-theme="dark"] .hero-bg { background: #1e293b; }
 </style>
 
-<div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); z-index: -1;"></div>
+<div class="hero-bg"></div>
 
 <div class="text-center d-flex flex-column justify-content-center align-items-center px-3" style="min-height: 80vh;">
-
     <div class="d-flex align-items-center justify-content-center gap-2 gap-md-3 mb-4 flex-wrap">
         <span class="icon-1">⚽</span>
         <span class="icon-2">🏀</span>
