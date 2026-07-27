@@ -4,12 +4,12 @@
 <h2>{{ ground.name }}</h2>
 <p>{{ ground.sport_type }} | {{ ground.address }}</p>
 <p>{{ ground.description }}</p>
-<p>🎮 {{ t.total_games }}: {{ total_games }}</p>
-<p>⭐ {{ t.rating }}: {{ ground.avg_rating }}/5 ({{ ground.total_ratings }} {{ t.ratings }})</p>
+<p><i class="ph ph-game-controller"></i> {{ t.total_games }}: {{ total_games }}</p>
+<p><i class="ph ph-star"></i> {{ t.rating }}: {{ ground.avg_rating }}/5 ({{ ground.total_ratings }} {{ t.ratings }})</p>
 
 {% if not user %}
 <div class="alert alert-info">
-    🔒 <a href="/login?lang={{ lang }}">Войдите</a> или <a href="/register?lang={{ lang }}">зарегистрируйтесь</a>, чтобы оценивать площадку и создавать игры
+    <i class="ph ph-lock"></i> <a href="/login?lang={{ lang }}">Войдите</a> или <a href="/register?lang={{ lang }}">зарегистрируйтесь</a>, чтобы оценивать площадку и создавать игры
 </div>
 {% endif %}
 
@@ -62,18 +62,18 @@ if (currentRating > 0) {
 {% endif %}
 
 {% if user %}
-<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createGameModal">{{ t.create_game }}</button>
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createGameModal"><i class="ph ph-plus-circle"></i> {{ t.create_game }}</button>
 {% endif %}
 
-<h4>{{ t.upcoming_games }}:</h4>
+<h4><i class="ph ph-calendar-check"></i> {{ t.upcoming_games }}:</h4>
 {% for game in games %}
 <div class="card mb-3">
     <div class="card-body">
         <h5>{{ game.title }}</h5>
-        <p>{{ game.game_date.strftime('%d.%m.%Y %H:%M') }} | {{ t.players }}: {{ game.players|length }}/{{ game.max_players }}</p>
+        <p><i class="ph ph-clock"></i> {{ game.game_date.strftime('%d.%m.%Y %H:%M') }} | {{ t.players }}: {{ game.players|length }}/{{ game.max_players }}</p>
         <p>{{ game.description }}</p>
 
-        <h6>{{ t.participants }}:</h6>
+        <h6><i class="ph ph-users"></i> {{ t.participants }}:</h6>
         <ul>
             {% for player in game.players %}
                 <li>{{ player.user.username }}</li>
@@ -84,12 +84,12 @@ if (currentRating > 0) {
 
         {% if user and game.players|selectattr("user_id", "equalto", user.id)|list|length == 0 and game.players|length < game.max_players %}
             <form method="post" action="/join_game/{{ game.id }}" style="display:inline;">
-                <button class="btn btn-sm btn-success">{{ t.join }}</button>
+                <button class="btn btn-sm btn-success"><i class="ph ph-user-plus"></i> {{ t.join }}</button>
             </form>
         {% endif %}
 
         <div class="mt-3">
-            <h6>{{ t.chat }}:</h6>
+            <h6><i class="ph ph-chat-circle-dots"></i> {{ t.chat }}:</h6>
             <div class="border p-2 mb-2" style="max-height:150px; overflow-y:auto;">
                 {% for msg in game.messages|sort(attribute='timestamp') %}
                     <p><strong>{{ msg.user.username }}</strong> <small class="text-muted">{{ msg.timestamp.strftime('%H:%M') }}</small>: {{ msg.text }}</p>
@@ -100,7 +100,7 @@ if (currentRating > 0) {
             {% if user %}
             <form method="post" action="/send_message/{{ game.id }}" class="d-flex">
                 <input type="text" name="text" class="form-control me-2" placeholder="{{ t.type_message }}" required>
-                <button class="btn btn-sm btn-outline-success">{{ t.send }}</button>
+                <button class="btn btn-sm btn-outline-success"><i class="ph ph-paper-plane-right"></i> {{ t.send }}</button>
             </form>
             {% endif %}
         </div>
@@ -115,7 +115,7 @@ if (currentRating > 0) {
   <div class="modal-dialog">
     <form method="post" action="/create_game">
       <div class="modal-content">
-        <div class="modal-header"><h5>{{ t.create_game }}</h5></div>
+        <div class="modal-header"><h5><i class="ph ph-plus-circle"></i> {{ t.create_game }}</h5></div>
         <div class="modal-body">
             <input type="hidden" name="ground_id" value="{{ ground.id }}">
             <input type="text" name="title" class="form-control mb-2" placeholder="Название" required>
@@ -123,7 +123,7 @@ if (currentRating > 0) {
             <input type="number" name="max_players" class="form-control mb-2" value="10" placeholder="Макс. игроков">
             <textarea name="description" class="form-control mb-2" placeholder="Описание"></textarea>
         </div>
-        <div class="modal-footer"><button class="btn btn-success">{{ t.create_game }}</button></div>
+        <div class="modal-footer"><button class="btn btn-success"><i class="ph ph-check"></i> {{ t.create_game }}</button></div>
       </div>
     </form>
   </div>
