@@ -11,7 +11,7 @@
         * { font-family: 'Montserrat', sans-serif; }
         body { font-weight: 600; }
         h1, h2, h3, h4, h5, h6 { font-weight: 800; }
-        .nav-link { font-weight: 700; font-size: 0.65rem; }
+        .nav-link { font-weight: 700; font-size: 0.55rem; }
         .navbar-brand { font-weight: 800; }
         body { background-color: #f1f5f9; color: #1a1a2e; }
         [data-bs-theme="dark"] body { background-color: #2d172b; color: #eee; }
@@ -30,16 +30,16 @@
         [data-bs-theme="dark"] .alert-info { background-color: #3d2039; color: #eee; border-color: #38bdf8; }
         [data-bs-theme="dark"] #searchSuggestions { background-color: #3d2039; color: #eee; }
         [data-bs-theme="dark"] #searchSuggestions div { border-color: #5a3055; }
-        .navbar { z-index: 1001; background-color: #d1fae5; border-radius: 0 0 20px 20px !important; padding: 4px 0; }
-        .nav-link { color: #065f46; border-radius: 20px; padding: 3px 7px; transition: all 0.2s; display: flex; align-items: center; gap: 3px; white-space: nowrap; }
+        .navbar { z-index: 1001; background-color: #d1fae5; border-radius: 0 0 15px 15px !important; padding: 2px 0; }
+        .nav-link { color: #065f46; border-radius: 15px; padding: 2px 5px; transition: all 0.2s; display: flex; align-items: center; gap: 2px; white-space: nowrap; }
         .nav-link:hover { background-color: #bcf5d5; color: #8b5cf6 !important; transform: scale(1.05); }
         .navbar-brand { color: #065f46; transition: transform 0.2s; padding: 0; }
         .navbar-brand:hover { transform: scale(1.05); }
-        .btn-outline-light { color: #065f46; border-color: #065f46; border-radius: 50%; width: 28px; height: 28px; padding: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 0.7rem; }
+        .btn-outline-light { color: #065f46; border-color: #065f46; border-radius: 50%; width: 24px; height: 24px; padding: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 0.6rem; }
         .btn-outline-light:hover { transform: scale(1.1); background-color: #bcf5d5; }
-        .dropdown-toggle { color: #065f46; display: flex; align-items: center; gap: 3px; padding: 3px 7px; border-radius: 20px; transition: all 0.2s; }
+        .dropdown-toggle { color: #065f46; display: flex; align-items: center; gap: 2px; padding: 2px 5px; border-radius: 15px; transition: all 0.2s; }
         .dropdown-toggle:hover { background-color: #bcf5d5; transform: scale(1.05); }
-        .navbar-brand img { height: 24px; }
+        .navbar-brand img { height: 20px; }
         .btn { border-radius: 30px !important; transition: all 0.2s !important; }
         .btn:hover { transform: scale(1.05) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important; }
         .btn-warning:hover { color: #8b5cf6 !important; }
@@ -51,13 +51,7 @@
         .alert { border-radius: 15px !important; }
         .badge { border-radius: 20px !important; }
         #map { border-radius: 20px !important; }
-        #chatBox {
-            border-radius: 20px !important;
-            transform-origin: bottom right;
-            transform: scale(0);
-            opacity: 0;
-            transition: transform 0.2s ease-out, opacity 0.15s ease;
-        }
+        #chatBox { border-radius: 20px !important; transform-origin: bottom right; transform: scale(0); opacity: 0; transition: transform 0.2s ease-out, opacity 0.15s ease; }
         #chatBox.show { transform: scale(1); opacity: 1; display: flex !important; }
         #chatBox > div:first-child { border-radius: 20px 20px 0 0 !important; }
         #chatBtn { border-radius: 50% !important; transition: transform 0.2s, box-shadow 0.2s; }
@@ -72,13 +66,13 @@
         [data-bs-theme="dark"] .dropdown-item:hover { color: #8b5cf6 !important; background-color: #3d2039; }
         .progress { border-radius: 10px !important; }
         .progress-bar { border-radius: 10px !important; }
-        .ph { font-size: 0.9em; vertical-align: middle; }
-        .container { padding-left: 6px; padding-right: 6px; }
+        .ph { font-size: 0.8em; vertical-align: middle; }
+        .container { padding-left: 4px; padding-right: 4px; }
         @media (min-width: 768px) {
-            .nav-link { font-size: 0.85rem; padding: 6px 12px; gap: 5px; }
-            .navbar-brand img { height: 34px; }
-            .btn-outline-light { width: 34px; height: 34px; font-size: 0.85rem; }
-            .ph { font-size: 1.1em; }
+            .nav-link { font-size: 0.85rem; padding: 8px 14px; gap: 6px; }
+            .navbar-brand img { height: 36px; }
+            .btn-outline-light { width: 36px; height: 36px; font-size: 0.9rem; }
+            .ph { font-size: 1.2em; }
             .container { padding-left: 12px; padding-right: 12px; }
             .navbar { padding: 6px 0; }
             #map { height: 500px !important; }
@@ -116,8 +110,8 @@
         {% block content %}{% endblock %}
     </div>
 
-    <button id="chatBtn" style="position:fixed;bottom:15px;right:10px;width:48px;height:48px;background:#8b5cf6;color:#fff;border:none;font-size:20px;z-index:999;display:flex;align-items:center;justify-content:center;"><i class="ph ph-chat-circle-dots"></i></button>
-    <div id="chatBox" style="position:fixed;bottom:70px;right:10px;width:260px;height:350px;background:#1e293b;box-shadow:0 0 20px rgba(0,0,0,0.5);z-index:999;display:none;flex-direction:column;">
+    <button id="chatBtn" style="position:fixed;bottom:15px;right:10px;width:44px;height:44px;background:#8b5cf6;color:#fff;border:none;font-size:18px;z-index:999;display:flex;align-items:center;justify-content:center;"><i class="ph ph-chat-circle-dots"></i></button>
+    <div id="chatBox" style="position:fixed;bottom:65px;right:10px;width:250px;height:330px;background:#1e293b;box-shadow:0 0 20px rgba(0,0,0,0.5);z-index:999;display:none;flex-direction:column;">
         <div style="background:#8b5cf6;padding:8px;color:#fff;font-weight:bold;display:flex;justify-content:space-between;align-items:center;">
             {{ t.chat_admin }}
             <button id="clearChat" title="{{ t.clear_chat }}"><i class="ph ph-trash"></i></button>
@@ -148,58 +142,19 @@
         });
         var chatBox = document.getElementById('chatBox');
         var chatBtn = document.getElementById('chatBtn');
-        function openChat() {
-            chatBox.style.display = 'flex';
-            setTimeout(function() { chatBox.classList.add('show'); }, 10);
-        }
-        function closeChat() {
-            chatBox.classList.remove('show');
-            setTimeout(function() { chatBox.style.display = 'none'; }, 200);
-        }
-        chatBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (chatBox.classList.contains('show')) { closeChat(); }
-            else { openChat(); }
-        });
+        function openChat() { chatBox.style.display = 'flex'; setTimeout(function() { chatBox.classList.add('show'); }, 10); }
+        function closeChat() { chatBox.classList.remove('show'); setTimeout(function() { chatBox.style.display = 'none'; }, 200); }
+        chatBtn.addEventListener('click', function(e) { e.stopPropagation(); if (chatBox.classList.contains('show')) closeChat(); else openChat(); });
         chatBox.addEventListener('click', function(e) { e.stopPropagation(); });
-        document.addEventListener('click', function() {
-            if (chatBox.classList.contains('show')) { closeChat(); }
-        });
+        document.addEventListener('click', function() { if (chatBox.classList.contains('show')) closeChat(); });
         var chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
-        chatHistory.forEach(function(item) {
-            var side = item.type === 'user' ? 'right' : 'left';
-            var color = item.type === 'user' ? '#8b5cf6' : '#10b981';
-            document.getElementById('chatMessages').innerHTML += '<div style="text-align:' + side + ';margin:5px;"><span style="background:' + color + ';padding:5px 10px;border-radius:10px;">' + item.text + '</span></div>';
-        });
+        chatHistory.forEach(function(item) { var side = item.type === 'user' ? 'right' : 'left'; var color = item.type === 'user' ? '#8b5cf6' : '#10b981'; document.getElementById('chatMessages').innerHTML += '<div style="text-align:' + side + ';margin:5px;"><span style="background:' + color + ';padding:5px 10px;border-radius:10px;">' + item.text + '</span></div>'; });
         {% if user %}
-        document.getElementById('chatForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            var input = document.getElementById('chatInput');
-            var msg = input.value;
-            if (!msg.trim()) return;
-            input.value = '';
-            document.getElementById('chatMessages').innerHTML += '<div style="text-align:right;margin:5px;"><span style="background:#8b5cf6;padding:5px 10px;border-radius:10px;">' + msg + '</span></div>';
-            chatHistory.push({type: 'user', text: msg});
-            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-            await fetch('/chat_send', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'text=' + encodeURIComponent(msg) });
-        });
+        document.getElementById('chatForm').addEventListener('submit', async function(e) { e.preventDefault(); var input = document.getElementById('chatInput'); var msg = input.value; if (!msg.trim()) return; input.value = ''; document.getElementById('chatMessages').innerHTML += '<div style="text-align:right;margin:5px;"><span style="background:#8b5cf6;padding:5px 10px;border-radius:10px;">' + msg + '</span></div>'; chatHistory.push({type: 'user', text: msg}); localStorage.setItem('chatHistory', JSON.stringify(chatHistory)); await fetch('/chat_send', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'text=' + encodeURIComponent(msg) }); });
         {% endif %}
-        document.getElementById('clearChat').addEventListener('click', function() {
-            document.getElementById('chatMessages').innerHTML = '';
-            localStorage.removeItem('chatHistory');
-            chatHistory = [];
-        });
+        document.getElementById('clearChat').addEventListener('click', function() { document.getElementById('chatMessages').innerHTML = ''; localStorage.removeItem('chatHistory'); chatHistory = []; });
         {% if user %}
-        setInterval(async function() {
-            var res = await fetch('/chat_check');
-            var data = await res.json();
-            if (data.reply) {
-                document.getElementById('chatMessages').innerHTML += '<div style="text-align:left;margin:5px;"><span style="background:#10b981;padding:5px 10px;border-radius:10px;">' + data.reply + '</span></div>';
-                chatHistory.push({type: 'admin', text: data.reply});
-                localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-                await fetch('/chat_clear');
-            }
-        }, 5000);
+        setInterval(async function() { var res = await fetch('/chat_check'); var data = await res.json(); if (data.reply) { document.getElementById('chatMessages').innerHTML += '<div style="text-align:left;margin:5px;"><span style="background:#10b981;padding:5px 10px;border-radius:10px;">' + data.reply + '</span></div>'; chatHistory.push({type: 'admin', text: data.reply}); localStorage.setItem('chatHistory', JSON.stringify(chatHistory)); await fetch('/chat_clear'); } }, 5000);
         {% endif %}
     </script>
 </body>
