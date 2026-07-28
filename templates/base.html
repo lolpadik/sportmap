@@ -137,15 +137,36 @@
             this.innerHTML = newTheme === 'dark' ? '<i class="ph ph-sun"></i>' : '<i class="ph ph-moon"></i>';
         });
         var chatBox = document.getElementById('chatBox');
-        document.getElementById('chatBtn').addEventListener('click', function() {
+        var chatBtn = document.getElementById('chatBtn');
+        
+        function openChat() {
+            chatBox.style.display = 'flex';
+            setTimeout(function() { chatBox.classList.add('show'); }, 10);
+        }
+        function closeChat() {
+            chatBox.classList.remove('show');
+            setTimeout(function() { chatBox.style.display = 'none'; }, 200);
+        }
+        
+        chatBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
             if (chatBox.classList.contains('show')) {
-                chatBox.classList.remove('show');
-                setTimeout(function() { chatBox.style.display = 'none'; }, 200);
+                closeChat();
             } else {
-                chatBox.style.display = 'flex';
-                setTimeout(function() { chatBox.classList.add('show'); }, 10);
+                openChat();
             }
         });
+        
+        chatBox.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        document.addEventListener('click', function() {
+            if (chatBox.classList.contains('show')) {
+                closeChat();
+            }
+        });
+        
         var chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
         chatHistory.forEach(function(item) {
             var side = item.type === 'user' ? 'right' : 'left';
