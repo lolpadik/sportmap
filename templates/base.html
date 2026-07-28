@@ -11,8 +11,8 @@
         * { font-family: 'Montserrat', sans-serif; }
         body { font-weight: 600; }
         h1, h2, h3, h4, h5, h6 { font-weight: 800; }
-        .navbar .nav-link { font-weight: 700; }
-        .navbar .navbar-brand { font-weight: 800; }
+        .nav-link { font-weight: 700; }
+        .navbar-brand { font-weight: 800; }
         body { background-color: #f1f5f9; color: #1a1a2e; }
         [data-bs-theme="dark"] body { background-color: #2d172b; color: #eee; }
         [data-bs-theme="dark"] .card { background-color: #3d2039; color: #eee; }
@@ -31,14 +31,14 @@
         [data-bs-theme="dark"] #searchSuggestions { background-color: #3d2039; color: #eee; }
         [data-bs-theme="dark"] #searchSuggestions div { border-color: #5a3055; }
         .navbar { z-index: 1001; background-color: #d1fae5; border-radius: 0 0 20px 20px !important; }
-        .navbar .nav-link { color: #065f46; border-radius: 30px; padding: 8px 16px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
-        .navbar .nav-link:hover { background-color: #bcf5d5; color: #8b5cf6 !important; transform: scale(1.05); }
-        .navbar .navbar-brand { color: #065f46; transition: transform 0.2s; }
-        .navbar .navbar-brand:hover { transform: scale(1.05); }
-        .navbar .btn-outline-light { color: #065f46; border-color: #065f46; border-radius: 50%; width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .navbar .btn-outline-light:hover { transform: scale(1.1); background-color: #bcf5d5; }
-        .navbar .dropdown-toggle { color: #065f46; display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 30px; transition: all 0.2s; }
-        .navbar .dropdown-toggle:hover { background-color: #bcf5d5; transform: scale(1.05); }
+        .nav-link { color: #065f46; border-radius: 30px; padding: 8px 16px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .nav-link:hover { background-color: #bcf5d5; color: #8b5cf6 !important; transform: scale(1.05); }
+        .navbar-brand { color: #065f46; transition: transform 0.2s; }
+        .navbar-brand:hover { transform: scale(1.05); }
+        .btn-outline-light { color: #065f46; border-color: #065f46; border-radius: 50%; width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .btn-outline-light:hover { transform: scale(1.1); background-color: #bcf5d5; }
+        .dropdown-toggle { color: #065f46; display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 30px; transition: all 0.2s; }
+        .dropdown-toggle:hover { background-color: #bcf5d5; transform: scale(1.05); }
         .navbar-brand img { height: 40px; }
         .btn { border-radius: 30px !important; transition: all 0.2s !important; }
         .btn:hover { transform: scale(1.05) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important; }
@@ -74,7 +74,7 @@
         .progress-bar { border-radius: 10px !important; }
         .ph { font-size: 1.2em; vertical-align: middle; }
         @media (max-width: 768px) {
-            .navbar .nav-link { padding: 6px 10px; font-size: 0.85rem; gap: 4px; }
+            .nav-link { padding: 6px 10px; font-size: 0.85rem; gap: 4px; }
             .navbar-brand img { height: 30px; }
             .container { padding-left: 10px; padding-right: 10px; }
             #chatBox { width: 260px; height: 350px; bottom: 80px; right: 10px; }
@@ -84,10 +84,9 @@
             .btn { padding: 8px 16px !important; font-size: 0.9rem; }
             .card { margin-bottom: 10px; }
             #map { height: 350px !important; }
-            .navbar-nav { flex-wrap: wrap; justify-content: center; gap: 2px; }
         }
         @media (max-width: 480px) {
-            .navbar .nav-link { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-link { padding: 4px 8px; font-size: 0.7rem; gap: 3px; }
             .navbar-brand img { height: 25px; }
             #chatBox { width: 240px; height: 300px; }
             #chatBtn { width: 45px; height: 45px; }
@@ -97,15 +96,15 @@
             #map { height: 280px !important; }
             .col-md-4, .col-md-6, .col-md-8 { width: 100%; }
             table { font-size: 0.8rem; }
-            .navbar-nav { gap: 1px; }
+            .ph { font-size: 1em; }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark mb-0">
+    <nav class="navbar navbar-expand navbar-dark mb-0">
         <div class="container">
             <a class="navbar-brand" href="/?lang={{ lang }}"><img src="/static/logo.jpg" alt="SportMap"></a>
-            <div class="navbar-nav ms-auto">
+            <div class="d-flex flex-row flex-wrap align-items-center ms-auto gap-1">
                 <a class="nav-link" href="/map?lang={{ lang }}"><i class="ph ph-map-pin"></i> {{ t.map }}</a>
                 <a class="nav-link" href="/stats?lang={{ lang }}"><i class="ph ph-chart-bar"></i> {{ t.stats }}</a>
                 <a class="nav-link" href="/calendar?lang={{ lang }}"><i class="ph ph-calendar"></i> {{ t.calendar }}</a>
