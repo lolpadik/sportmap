@@ -32,7 +32,7 @@
 </div>
 
 <div class="alert alert-info mt-2 mb-3" role="alert">
-    <i class="ph ph-info"></i> <strong>Кликни на карту</strong>, чтобы предложить новую площадку
+    <i class="ph ph-info"></i> {{ t.click_map }}
 </div>
 
 <div id="map" style="height: 500px; border-radius: 15px;"></div>
@@ -154,9 +154,7 @@
         var searchInput = document.getElementById('searchInput');
         var suggestionsDiv = document.getElementById('searchSuggestions');
         
-        function hideSuggestions() {
-            suggestionsDiv.style.display = 'none';
-        }
+        function hideSuggestions() { suggestionsDiv.style.display = 'none'; }
         
         searchInput.addEventListener('input', function() {
             searchText = this.value;
@@ -186,9 +184,7 @@
                     suggestionsDiv.appendChild(div);
                 });
                 suggestionsDiv.style.display = 'block';
-            } else {
-                hideSuggestions();
-            }
+            } else { hideSuggestions(); }
         });
         
         searchInput.addEventListener('keydown', function(e) {
@@ -201,18 +197,13 @@
                 var found = allGrounds.filter(function(g) {
                     return g.address.toLowerCase().indexOf(s) !== -1 || g.name.toLowerCase().indexOf(s) !== -1;
                 });
-                if (found.length > 0) {
-                    map.setCenter([found[0].lat, found[0].lon], 15);
-                } else if (s) {
-                    alert('Адрес не найден');
-                }
+                if (found.length > 0) { map.setCenter([found[0].lat, found[0].lon], 15); }
+                else if (s) { alert('Адрес не найден'); }
             }
         });
         
         document.addEventListener('click', function(e) {
-            if (e.target !== searchInput && e.target.parentNode !== suggestionsDiv) {
-                hideSuggestions();
-            }
+            if (e.target !== searchInput && e.target.parentNode !== suggestionsDiv) { hideSuggestions(); }
         });
         
         map.events.add('click', function(e) {
