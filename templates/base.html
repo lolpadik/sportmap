@@ -2,7 +2,7 @@
 <html lang="{{ lang }}" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SportMap Belarus</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -11,8 +11,8 @@
         * { font-family: 'Montserrat', sans-serif; }
         body { font-weight: 600; }
         h1, h2, h3, h4, h5, h6 { font-weight: 800; }
-        .nav-link { font-weight: 700; }
-        .navbar-brand { font-weight: 800; }
+        .navbar .nav-link { font-weight: 700; }
+        .navbar .navbar-brand { font-weight: 800; }
         body { background-color: #f1f5f9; color: #1a1a2e; }
         [data-bs-theme="dark"] body { background-color: #2d172b; color: #eee; }
         [data-bs-theme="dark"] .card { background-color: #3d2039; color: #eee; }
@@ -31,14 +31,14 @@
         [data-bs-theme="dark"] #searchSuggestions { background-color: #3d2039; color: #eee; }
         [data-bs-theme="dark"] #searchSuggestions div { border-color: #5a3055; }
         .navbar { z-index: 1001; background-color: #d1fae5; border-radius: 0 0 20px 20px !important; }
-        .nav-link { color: #065f46; border-radius: 30px; padding: 8px 16px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
-        .nav-link:hover { background-color: #bcf5d5; color: #8b5cf6 !important; transform: scale(1.05); }
-        .navbar-brand { color: #065f46; transition: transform 0.2s; }
-        .navbar-brand:hover { transform: scale(1.05); }
-        .btn-outline-light { color: #065f46; border-color: #065f46; border-radius: 50%; width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .btn-outline-light:hover { transform: scale(1.1); background-color: #bcf5d5; }
-        .dropdown-toggle { color: #065f46; display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 30px; transition: all 0.2s; }
-        .dropdown-toggle:hover { background-color: #bcf5d5; transform: scale(1.05); }
+        .navbar .nav-link { color: #065f46; border-radius: 30px; padding: 8px 16px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+        .navbar .nav-link:hover { background-color: #bcf5d5; color: #8b5cf6 !important; transform: scale(1.05); }
+        .navbar .navbar-brand { color: #065f46; transition: transform 0.2s; }
+        .navbar .navbar-brand:hover { transform: scale(1.05); }
+        .navbar .btn-outline-light { color: #065f46; border-color: #065f46; border-radius: 50%; width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .navbar .btn-outline-light:hover { transform: scale(1.1); background-color: #bcf5d5; }
+        .navbar .dropdown-toggle { color: #065f46; display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 30px; transition: all 0.2s; }
+        .navbar .dropdown-toggle:hover { background-color: #bcf5d5; transform: scale(1.05); }
         .navbar-brand img { height: 40px; }
         .btn { border-radius: 30px !important; transition: all 0.2s !important; }
         .btn:hover { transform: scale(1.05) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important; }
@@ -51,7 +51,13 @@
         .alert { border-radius: 15px !important; }
         .badge { border-radius: 20px !important; }
         #map { border-radius: 20px !important; }
-        #chatBox { border-radius: 20px !important; transform-origin: bottom right; transform: scale(0); opacity: 0; transition: transform 0.2s ease-out, opacity 0.15s ease; }
+        #chatBox {
+            border-radius: 20px !important;
+            transform-origin: bottom right;
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 0.2s ease-out, opacity 0.15s ease;
+        }
         #chatBox.show { transform: scale(1); opacity: 1; display: flex !important; }
         #chatBox > div:first-child { border-radius: 20px 20px 0 0 !important; }
         #chatBtn { border-radius: 50% !important; transition: transform 0.2s, box-shadow 0.2s; }
@@ -67,22 +73,13 @@
         .progress { border-radius: 10px !important; }
         .progress-bar { border-radius: 10px !important; }
         .ph { font-size: 1.2em; vertical-align: middle; }
-        .desktop-nav { display: flex; }
-        .mobile-nav { display: none; }
-        @media (max-width: 768px) {
-            .desktop-nav { display: none; }
-            .mobile-nav { display: block; }
-            .navbar-brand img { height: 32px; }
-            #map { height: 350px !important; }
-        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand navbar-dark mb-0">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-0">
         <div class="container">
             <a class="navbar-brand" href="/?lang={{ lang }}"><img src="/static/logo.jpg" alt="SportMap"></a>
-            <!-- Компьютер -->
-            <div class="desktop-nav d-flex flex-row align-items-center ms-auto gap-1">
+            <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="/map?lang={{ lang }}"><i class="ph ph-map-pin"></i> {{ t.map }}</a>
                 <a class="nav-link" href="/stats?lang={{ lang }}"><i class="ph ph-chart-bar"></i> {{ t.stats }}</a>
                 <a class="nav-link" href="/calendar?lang={{ lang }}"><i class="ph ph-calendar"></i> {{ t.calendar }}</a>
@@ -94,39 +91,12 @@
                     <a class="nav-link" href="/register?lang={{ lang }}"><i class="ph ph-user-plus"></i> {{ t.register }}</a>
                 {% endif %}
                 <button class="btn btn-sm btn-outline-light ms-2" id="themeToggle"><i class="ph ph-moon"></i></button>
-                <div class="nav-item dropdown ms-2" onmouseover="this.querySelector('.dropdown-menu').classList.add('show')" onmouseleave="this.querySelector('.dropdown-menu').classList.remove('show')">
-                    <span class="nav-link dropdown-toggle" style="cursor:pointer;"><i class="ph ph-translate"></i></span>
+                <div class="nav-item dropdown ms-2">
+                    <span class="nav-link dropdown-toggle" style="cursor:pointer;" onclick="this.parentElement.querySelector('.dropdown-menu').classList.toggle('show')"><i class="ph ph-translate"></i></span>
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item" href="?lang=ru">Русский</a>
                         <a class="dropdown-item" href="?lang=be">Беларуская</a>
                         <a class="dropdown-item" href="?lang=en">English</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Телефон -->
-            <div class="mobile-nav">
-                <button class="btn btn-sm" style="background:none;border:none;color:#065f46;font-size:1.5rem;" onclick="document.getElementById('mobileMenu').classList.toggle('show')">
-                    <i class="ph ph-list"></i>
-                </button>
-                <div id="mobileMenu" style="display:none;position:absolute;top:100%;right:0;background:#d1fae5;border-radius:15px;padding:10px;z-index:1002;min-width:180px;">
-                    <a class="nav-link" href="/map?lang={{ lang }}"><i class="ph ph-map-pin"></i> {{ t.map }}</a>
-                    <a class="nav-link" href="/stats?lang={{ lang }}"><i class="ph ph-chart-bar"></i> {{ t.stats }}</a>
-                    <a class="nav-link" href="/calendar?lang={{ lang }}"><i class="ph ph-calendar"></i> {{ t.calendar }}</a>
-                    {% if user %}
-                        <a class="nav-link" href="/profile?lang={{ lang }}"><i class="ph ph-user-circle"></i> {{ user.username }}</a>
-                        <a class="nav-link" href="/logout"><i class="ph ph-sign-out"></i> {{ t.logout }}</a>
-                    {% else %}
-                        <a class="nav-link" href="/login?lang={{ lang }}"><i class="ph ph-sign-in"></i> {{ t.login }}</a>
-                        <a class="nav-link" href="/register?lang={{ lang }}"><i class="ph ph-user-plus"></i> {{ t.register }}</a>
-                    {% endif %}
-                    <button class="btn btn-sm btn-outline-light ms-2" id="themeToggleM"><i class="ph ph-moon"></i></button>
-                    <div class="nav-item dropdown">
-                        <span class="nav-link dropdown-toggle" style="cursor:pointer;" onclick="this.parentElement.querySelector('.dropdown-menu').classList.toggle('show')"><i class="ph ph-translate"></i></span>
-                        <div class="dropdown-menu" style="right:100%;left:auto;">
-                            <a class="dropdown-item" href="?lang=ru">Русский</a>
-                            <a class="dropdown-item" href="?lang=be">Беларуская</a>
-                            <a class="dropdown-item" href="?lang=en">English</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -160,24 +130,67 @@
         var theme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-bs-theme', theme);
         document.getElementById('themeToggle').innerHTML = theme === 'dark' ? '<i class="ph ph-sun"></i>' : '<i class="ph ph-moon"></i>';
-        document.getElementById('themeToggle').addEventListener('click', function() { var newTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-bs-theme', newTheme); localStorage.setItem('theme', newTheme); this.innerHTML = newTheme === 'dark' ? '<i class="ph ph-sun"></i>' : '<i class="ph ph-moon"></i>'; });
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            var newTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            this.innerHTML = newTheme === 'dark' ? '<i class="ph ph-sun"></i>' : '<i class="ph ph-moon"></i>';
+        });
         var chatBox = document.getElementById('chatBox');
         var chatBtn = document.getElementById('chatBtn');
-        function openChat() { chatBox.style.display = 'flex'; setTimeout(function() { chatBox.classList.add('show'); }, 10); }
-        function closeChat() { chatBox.classList.remove('show'); setTimeout(function() { chatBox.style.display = 'none'; }, 200); }
-        chatBtn.addEventListener('click', function(e) { e.stopPropagation(); if (chatBox.classList.contains('show')) closeChat(); else openChat(); });
+        function openChat() {
+            chatBox.style.display = 'flex';
+            setTimeout(function() { chatBox.classList.add('show'); }, 10);
+        }
+        function closeChat() {
+            chatBox.classList.remove('show');
+            setTimeout(function() { chatBox.style.display = 'none'; }, 200);
+        }
+        chatBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (chatBox.classList.contains('show')) { closeChat(); }
+            else { openChat(); }
+        });
         chatBox.addEventListener('click', function(e) { e.stopPropagation(); });
-        document.addEventListener('click', function() { if (chatBox.classList.contains('show')) closeChat(); });
+        document.addEventListener('click', function() {
+            if (chatBox.classList.contains('show')) { closeChat(); }
+        });
         var chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
-        chatHistory.forEach(function(item) { var side = item.type === 'user' ? 'right' : 'left'; var color = item.type === 'user' ? '#8b5cf6' : '#10b981'; document.getElementById('chatMessages').innerHTML += '<div style="text-align:' + side + ';margin:5px;"><span style="background:' + color + ';padding:5px 10px;border-radius:10px;">' + item.text + '</span></div>'; });
+        chatHistory.forEach(function(item) {
+            var side = item.type === 'user' ? 'right' : 'left';
+            var color = item.type === 'user' ? '#8b5cf6' : '#10b981';
+            document.getElementById('chatMessages').innerHTML += '<div style="text-align:' + side + ';margin:5px;"><span style="background:' + color + ';padding:5px 10px;border-radius:10px;">' + item.text + '</span></div>';
+        });
         {% if user %}
-        document.getElementById('chatForm').addEventListener('submit', async function(e) { e.preventDefault(); var input = document.getElementById('chatInput'); var msg = input.value; if (!msg.trim()) return; input.value = ''; document.getElementById('chatMessages').innerHTML += '<div style="text-align:right;margin:5px;"><span style="background:#8b5cf6;padding:5px 10px;border-radius:10px;">' + msg + '</span></div>'; chatHistory.push({type: 'user', text: msg}); localStorage.setItem('chatHistory', JSON.stringify(chatHistory)); await fetch('/chat_send', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'text=' + encodeURIComponent(msg) }); });
+        document.getElementById('chatForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var input = document.getElementById('chatInput');
+            var msg = input.value;
+            if (!msg.trim()) return;
+            input.value = '';
+            document.getElementById('chatMessages').innerHTML += '<div style="text-align:right;margin:5px;"><span style="background:#8b5cf6;padding:5px 10px;border-radius:10px;">' + msg + '</span></div>';
+            chatHistory.push({type: 'user', text: msg});
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            await fetch('/chat_send', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'text=' + encodeURIComponent(msg) });
+        });
         {% endif %}
-        document.getElementById('clearChat').addEventListener('click', function() { document.getElementById('chatMessages').innerHTML = ''; localStorage.removeItem('chatHistory'); chatHistory = []; });
+        document.getElementById('clearChat').addEventListener('click', function() {
+            document.getElementById('chatMessages').innerHTML = '';
+            localStorage.removeItem('chatHistory');
+            chatHistory = [];
+        });
         {% if user %}
-        setInterval(async function() { var res = await fetch('/chat_check'); var data = await res.json(); if (data.reply) { document.getElementById('chatMessages').innerHTML += '<div style="text-align:left;margin:5px;"><span style="background:#10b981;padding:5px 10px;border-radius:10px;">' + data.reply + '</span></div>'; chatHistory.push({type: 'admin', text: data.reply}); localStorage.setItem('chatHistory', JSON.stringify(chatHistory)); await fetch('/chat_clear'); } }, 5000);
+        setInterval(async function() {
+            var res = await fetch('/chat_check');
+            var data = await res.json();
+            if (data.reply) {
+                document.getElementById('chatMessages').innerHTML += '<div style="text-align:left;margin:5px;"><span style="background:#10b981;padding:5px 10px;border-radius:10px;">' + data.reply + '</span></div>';
+                chatHistory.push({type: 'admin', text: data.reply});
+                localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+                await fetch('/chat_clear');
+            }
+        }, 5000);
         {% endif %}
-        document.getElementById('themeToggleM').addEventListener('click', function() { var newTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-bs-theme', newTheme); localStorage.setItem('theme', newTheme); document.getElementById('themeToggleM').innerHTML = newTheme === 'dark' ? '<i class="ph ph-sun"></i>' : '<i class="ph ph-moon"></i>'; document.getElementById('themeToggle').innerHTML = newTheme === 'dark' ? '<i class="ph ph-sun"></i>' : '<i class="ph ph-moon"></i>'; });
     </script>
 </body>
 </html>
