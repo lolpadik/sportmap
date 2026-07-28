@@ -241,7 +241,8 @@ async def set_city(request: Request, city: str = Form(...), db: Session = Depend
     db_user.city = city
     db.commit()
     db.refresh(db_user)
-    return RedirectResponse("/profile", status_code=303)
+    lang = request.query_params.get("lang", "ru")
+    return RedirectResponse(f"/profile?lang={lang}", status_code=303)
 
 
 @app.post("/rate_ground/{ground_id}")
