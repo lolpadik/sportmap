@@ -91,8 +91,8 @@
                     <a class="nav-link" href="/register?lang={{ lang }}"><i class="ph ph-user-plus"></i> {{ t.register }}</a>
                 {% endif %}
                 <button class="btn btn-sm btn-outline-light ms-2" id="themeToggle"><i class="ph ph-moon"></i></button>
-                <div class="nav-item dropdown ms-2">
-                    <span class="nav-link dropdown-toggle" style="cursor:pointer;" onclick="this.parentElement.querySelector('.dropdown-menu').classList.toggle('show')"><i class="ph ph-translate"></i></span>
+                <div class="nav-item dropdown ms-2" onmouseover="this.querySelector('.dropdown-menu').classList.add('show')" onmouseleave="this.querySelector('.dropdown-menu').classList.remove('show')">
+                    <span class="nav-link dropdown-toggle" style="cursor:pointer;"><i class="ph ph-translate"></i></span>
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item" href="?lang=ru">Русский</a>
                         <a class="dropdown-item" href="?lang=be">Беларуская</a>
@@ -114,7 +114,7 @@
         </div>
         <div id="chatMessages" style="flex:1;overflow-y:auto;padding:10px;color:#fff;">
             {% if not user %}
-            <p style="text-align:center;margin-top:50px;"><i class="ph ph-lock"></i> <a href="/login?lang={{ lang }}" style="color:#8b5cf6;">{{ t.login }}</a> или <a href="/register?lang={{ lang }}" style="color:#8b5cf6;">{{ t.register }}</a>, {{ t.login_to_chat_text }}</p>
+            <p style="text-align:center;margin-top:50px;"><i class="ph ph-lock"></i> <a href="/login?lang={{ lang }}" style="color:#8b5cf6;">{{ t.login }}</a> {{ t.or }} <a href="/register?lang={{ lang }}" style="color:#8b5cf6;">{{ t.register }}</a>, {{ t.login_to_chat_text }}</p>
             {% endif %}
         </div>
         {% if user %}
