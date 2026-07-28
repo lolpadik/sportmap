@@ -9,7 +9,7 @@
 
 {% if not user %}
 <div class="alert alert-info">
-    <i class="ph ph-lock"></i> <a href="/login?lang={{ lang }}">Войдите</a> или <a href="/register?lang={{ lang }}">зарегистрируйтесь</a>, чтобы оценивать площадку и создавать игры
+    <i class="ph ph-lock"></i> {{ t.login_to_rate }}
 </div>
 {% endif %}
 
