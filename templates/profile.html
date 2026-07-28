@@ -7,12 +7,12 @@
 <h5><i class="ph ph-city"></i> {{ t.my_city }}:</h5>
 <form method="post" action="/set_city" class="mb-3">
     <select name="city" class="form-select d-inline w-auto">
-        <option value="Минск" {% if user.city == 'Минск' %}selected{% endif %}>Минск</option>
-        <option value="Гомель" {% if user.city == 'Гомель' %}selected{% endif %}>Гомель</option>
-        <option value="Могилёв" {% if user.city == 'Могилёв' %}selected{% endif %}>Могилёв</option>
-        <option value="Брест" {% if user.city == 'Брест' %}selected{% endif %}>Брест</option>
-        <option value="Гродно" {% if user.city == 'Гродно' %}selected{% endif %}>Гродно</option>
-        <option value="Витебск" {% if user.city == 'Витебск' %}selected{% endif %}>Витебск</option>
+        <option value="Минск" {% if user.city == 'Минск' %}selected{% endif %}>{{ t.city_minsk }}</option>
+        <option value="Гомель" {% if user.city == 'Гомель' %}selected{% endif %}>{{ t.city_gomel }}</option>
+        <option value="Могилёв" {% if user.city == 'Могилёв' %}selected{% endif %}>{{ t.city_mogilev }}</option>
+        <option value="Брест" {% if user.city == 'Брест' %}selected{% endif %}>{{ t.city_brest }}</option>
+        <option value="Гродно" {% if user.city == 'Гродно' %}selected{% endif %}>{{ t.city_grodno }}</option>
+        <option value="Витебск" {% if user.city == 'Витебск' %}selected{% endif %}>{{ t.city_vitebsk }}</option>
     </select>
     <button class="btn btn-sm btn-primary"><i class="ph ph-check"></i> {{ t.save }}</button>
 </form>
@@ -27,7 +27,7 @@
             <h5>{{ game.title }}</h5>
             <p><i class="ph ph-map-pin"></i> {{ game.ground.name }} | <i class="ph ph-clock"></i> {{ game.game_date.strftime('%d.%m.%Y %H:%M') }}</p>
             <p><i class="ph ph-users"></i> {{ t.players }}: {{ game.players|length }}/{{ game.max_players }}</p>
-            <a href="/ground/{{ game.ground_id }}?lang={{ lang }}" class="btn btn-sm btn-primary"><i class="ph ph-arrow-right"></i> Открыть</a>
+            <a href="/ground/{{ game.ground_id }}?lang={{ lang }}" class="btn btn-sm btn-primary"><i class="ph ph-arrow-right"></i> {{ t.open }}</a>
         </div>
     </div>
     {% endfor %}
@@ -45,7 +45,7 @@
             <h5>{{ game.title }}</h5>
             <p><i class="ph ph-map-pin"></i> {{ game.ground.name }} | <i class="ph ph-clock"></i> {{ game.game_date.strftime('%d.%m.%Y %H:%M') }}</p>
             <p><i class="ph ph-user"></i> {{ t.players }}: {{ game.players|length }}/{{ game.max_players }}</p>
-            <a href="/ground/{{ game.ground_id }}?lang={{ lang }}" class="btn btn-sm btn-primary"><i class="ph ph-arrow-right"></i> Открыть</a>
+            <a href="/ground/{{ game.ground_id }}?lang={{ lang }}" class="btn btn-sm btn-primary"><i class="ph ph-arrow-right"></i> {{ t.open }}</a>
         </div>
     </div>
     {% endfor %}

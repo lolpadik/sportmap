@@ -131,7 +131,7 @@ async def register(request: Request, username: str = Form(...), password: str = 
     db.add(user)
     db.commit()
     request.session['user_id'] = user.id
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse(f"/?lang={lang}", status_code=303)
 
 
 @app.get("/login", response_class=HTMLResponse)
@@ -148,13 +148,14 @@ async def login(request: Request, username: str = Form(...), password: str = For
     if not user or not check_password(password, user.hashed_password):
         return templates.TemplateResponse("login.html", {"request": request, "error": "Неверное имя или пароль", "t": t, "lang": lang})
     request.session['user_id'] = user.id
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse(f"/?lang={lang}", status_code=303)
 
 
 @app.get("/logout")
 async def logout(request: Request):
+    lang = request.query_params.get("lang", "ru")
     request.session.clear()
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse(f"/?lang={lang}", status_code=303)
 
 
 @app.post("/create_game")

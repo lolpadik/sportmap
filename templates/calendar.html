@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
-<h2><i class="ph ph-calendar"></i> Календарь игр</h2>
+<h2><i class="ph ph-calendar"></i> {{ t.calendar }}</h2>
 {% if games %}
 <table class="table table-striped">
     <thead>
-        <tr><th>Дата</th><th>Игра</th><th>Площадка</th><th>Игроки</th></tr>
+        <tr><th><i class="ph ph-clock"></i> {{ t.game_date }}</th><th><i class="ph ph-game-controller"></i> {{ t.game_title }}</th><th><i class="ph ph-map-pin"></i> {{ t.game_ground }}</th><th><i class="ph ph-users"></i> {{ t.game_players }}</th></tr>
     </thead>
     <tbody>
     {% for game in games %}
@@ -19,7 +19,7 @@
     </tbody>
 </table>
 {% else %}
-<p>Нет запланированных игр</p>
+<p>{{ t.no_games_calendar }}</p>
 {% endif %}
 </div>
 {% endblock %}

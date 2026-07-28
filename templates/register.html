@@ -12,14 +12,14 @@
             <div class="progress" style="height: 5px;">
                 <div id="passStrength" class="progress-bar" style="width: 0%;"></div>
             </div>
-            <small id="passText" class="text-muted">Введите пароль</small>
+            <small id="passText" class="text-muted">{{ t.password_requirements }}</small>
         </div>
         
         <div class="mb-3" id="requirements">
-            <small id="req1" class="text-muted d-block"><i class="ph ph-x-circle"></i> Минимум 6 символов</small>
-            <small id="req2" class="text-muted d-block"><i class="ph ph-x-circle"></i> Заглавная буква</small>
-            <small id="req3" class="text-muted d-block"><i class="ph ph-x-circle"></i> Цифра</small>
-            <small id="req4" class="text-muted d-block"><i class="ph ph-x-circle"></i> Спецсимвол</small>
+            <small id="req1" class="text-muted d-block"><i class="ph ph-x-circle"></i> {{ t.req_length }}</small>
+            <small id="req2" class="text-muted d-block"><i class="ph ph-x-circle"></i> {{ t.req_upper }}</small>
+            <small id="req3" class="text-muted d-block"><i class="ph ph-x-circle"></i> {{ t.req_digit }}</small>
+            <small id="req4" class="text-muted d-block"><i class="ph ph-x-circle"></i> {{ t.req_special }}</small>
         </div>
         
         <button class="btn btn-success w-100" id="submitBtn" disabled><i class="ph ph-check"></i> {{ t.register }}</button>
@@ -31,35 +31,39 @@ var password = document.getElementById('password');
 var strength = document.getElementById('passStrength');
 var text = document.getElementById('passText');
 var btn = document.getElementById('submitBtn');
-
 var req1 = document.getElementById('req1');
 var req2 = document.getElementById('req2');
 var req3 = document.getElementById('req3');
 var req4 = document.getElementById('req4');
 
+var t_req_length = "{{ t.req_length }}";
+var t_req_upper = "{{ t.req_upper }}";
+var t_req_digit = "{{ t.req_digit }}";
+var t_req_special = "{{ t.req_special }}";
+
 password.addEventListener('input', function() {
     var val = password.value;
     var score = 0;
     
-    if (val.length >= 6) { req1.innerHTML = '<i class="ph ph-check-circle"></i> Минимум 6 символов'; req1.className = 'text-success d-block'; score++; }
-    else { req1.innerHTML = '<i class="ph ph-x-circle"></i> Минимум 6 символов'; req1.className = 'text-muted d-block'; }
+    if (val.length >= 6) { req1.innerHTML = '<i class="ph ph-check-circle"></i> ' + t_req_length; req1.className = 'text-success d-block'; score++; }
+    else { req1.innerHTML = '<i class="ph ph-x-circle"></i> ' + t_req_length; req1.className = 'text-muted d-block'; }
     
-    if (/[A-ZА-ЯЁ]/.test(val)) { req2.innerHTML = '<i class="ph ph-check-circle"></i> Заглавная буква'; req2.className = 'text-success d-block'; score++; }
-    else { req2.innerHTML = '<i class="ph ph-x-circle"></i> Заглавная буква'; req2.className = 'text-muted d-block'; }
+    if (/[A-ZА-ЯЁ]/.test(val)) { req2.innerHTML = '<i class="ph ph-check-circle"></i> ' + t_req_upper; req2.className = 'text-success d-block'; score++; }
+    else { req2.innerHTML = '<i class="ph ph-x-circle"></i> ' + t_req_upper; req2.className = 'text-muted d-block'; }
     
-    if (/[0-9]/.test(val)) { req3.innerHTML = '<i class="ph ph-check-circle"></i> Цифра'; req3.className = 'text-success d-block'; score++; }
-    else { req3.innerHTML = '<i class="ph ph-x-circle"></i> Цифра'; req3.className = 'text-muted d-block'; }
+    if (/[0-9]/.test(val)) { req3.innerHTML = '<i class="ph ph-check-circle"></i> ' + t_req_digit; req3.className = 'text-success d-block'; score++; }
+    else { req3.innerHTML = '<i class="ph ph-x-circle"></i> ' + t_req_digit; req3.className = 'text-muted d-block'; }
     
-    if (/[^A-Za-zА-Яа-яЁё0-9]/.test(val)) { req4.innerHTML = '<i class="ph ph-check-circle"></i> Спецсимвол'; req4.className = 'text-success d-block'; score++; }
-    else { req4.innerHTML = '<i class="ph ph-x-circle"></i> Спецсимвол'; req4.className = 'text-muted d-block'; }
+    if (/[^A-Za-zА-Яа-яЁё0-9]/.test(val)) { req4.innerHTML = '<i class="ph ph-check-circle"></i> ' + t_req_special; req4.className = 'text-success d-block'; score++; }
+    else { req4.innerHTML = '<i class="ph ph-x-circle"></i> ' + t_req_special; req4.className = 'text-muted d-block'; }
     
     var percent = score * 25;
     strength.style.width = percent + '%';
     
-    if (score <= 1) { strength.className = 'progress-bar bg-danger'; text.textContent = 'Слабый'; btn.disabled = true; }
-    else if (score <= 2) { strength.className = 'progress-bar bg-warning'; text.textContent = 'Средний'; btn.disabled = true; }
-    else if (score === 3) { strength.className = 'progress-bar bg-info'; text.textContent = 'Хороший'; btn.disabled = false; }
-    else { strength.className = 'progress-bar bg-success'; text.textContent = 'Надёжный'; btn.disabled = false; }
+    if (score <= 1) { strength.className = 'progress-bar bg-danger'; text.textContent = '{{ t.weak }}'; btn.disabled = true; }
+    else if (score <= 2) { strength.className = 'progress-bar bg-warning'; text.textContent = '{{ t.medium }}'; btn.disabled = true; }
+    else if (score === 3) { strength.className = 'progress-bar bg-info'; text.textContent = '{{ t.good }}'; btn.disabled = false; }
+    else { strength.className = 'progress-bar bg-success'; text.textContent = '{{ t.strong }}'; btn.disabled = false; }
 });
 </script>
 {% endblock %}
