@@ -114,7 +114,7 @@
         </div>
         <div id="chatMessages" style="flex:1;overflow-y:auto;padding:10px;color:#fff;">
             {% if not user %}
-            <p style="text-align:center;margin-top:50px;"><i class="ph ph-lock"></i> {{ t.login_to_chat }}</p>
+            <p style="text-align:center;margin-top:50px;"><i class="ph ph-lock"></i> <a href="/login?lang={{ lang }}" style="color:#8b5cf6;">{{ t.login }}</a> или <a href="/register?lang={{ lang }}" style="color:#8b5cf6;">{{ t.register }}</a>, чтобы писать в чат</p>
             {% endif %}
         </div>
         {% if user %}
