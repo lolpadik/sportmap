@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form, Depends
-from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
@@ -282,6 +282,11 @@ async def index(request: Request):
     user = get_current_user(request)
     lang, t = get_lang(request)
     return templates.TemplateResponse("index.html", {"request": request, "user": user, "t": t, "lang": lang})
+
+
+@app.get("/sitemap.xml")
+async def sitemap():
+    return FileResponse("sitemap.xml", media_type="application/xml")
 
 
 @app.get("/map", response_class=HTMLResponse)
